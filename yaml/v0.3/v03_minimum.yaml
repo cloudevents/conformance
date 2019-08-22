@@ -7,8 +7,8 @@ ContextAttributes:
   datacontenttype: text/plain; charset=us-ascii
 Data: |
     Hello, World!
----
 
+---
 # Minimum plain/text; charset=utf-8
 ContextAttributes:
   specversion: 0.3
@@ -18,3 +18,25 @@ ContextAttributes:
   datacontenttype: text/plain; charset=utf-8
 Data: |
   Hello, 🌎!
+
+---
+# Minimum application/json; charset=utf-8
+ContextAttributes:
+  specversion: 0.3
+  type: io.cloudevents.minimum
+  id: conformance-0003
+  source: //github.com/cloudevents/conformance/yaml/v3.yaml
+  datacontenttype: application/json; charset=utf-8
+Data: |
+  {"msg":"Hello, 🌎!"}
+
+---
+# Minimum application/xml; charset=utf-8
+ContextAttributes:
+  specversion: 0.3
+  type: io.cloudevents.minimum
+  id: conformance-0004
+  source: //github.com/cloudevents/conformance/yaml/v3.yaml
+  datacontenttype: application/xml; charset=utf-8
+Data: |
+  <msg>Hello, 🌎!</msg>
