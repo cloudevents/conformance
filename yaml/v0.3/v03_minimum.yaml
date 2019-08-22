@@ -38,11 +38,21 @@ ContextAttributes:
 Data: |
   {"msg":"Hello, 🌎!"}
 ---
-# Minimum application/xml; charset=utf-8
+# Minimum application/json; charset=utf-8
 ContextAttributes:
   specversion: 0.3
   type: io.cloudevents.minimum
   id: conformance-0005
+  source: //github.com/cloudevents/conformance/yaml/v3.yaml
+  datacontenttype: application/json; charset=utf-8
+Data: |
+  ["Hello","🌎!"]
+---
+# Minimum application/xml; charset=utf-8
+ContextAttributes:
+  specversion: 0.3
+  type: io.cloudevents.minimum
+  id: conformance-0006
   source: //github.com/cloudevents/conformance/yaml/v3.yaml
   datacontenttype: application/xml; charset=utf-8
 Data: |
