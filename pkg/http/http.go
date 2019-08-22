@@ -18,11 +18,12 @@ func addHeader(req *http.Request, key, value string) {
 
 func EventToRequest(url string, event event.Event) (*http.Request, error) {
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(event.Data.Data)))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(event.Data)))
 	if err != nil {
 		return nil, err
 	}
 
+	// CloudEvents attributes.
 	addHeader(req, "ce-specversion", event.Attributes.SpecVersion)
 	addHeader(req, "ce-type", event.Attributes.Type)
 	addHeader(req, "ce-time", event.Attributes.Time)
@@ -33,8 +34,14 @@ func EventToRequest(url string, event event.Event) (*http.Request, error) {
 	addHeader(req, "Content-Type", event.Attributes.DataContentType)
 	addHeader(req, "ce-datacontentencoding", event.Attributes.DataContentEncoding)
 
-	for k, v := range event.Extensions {
+	// CloudEvents attribute extensions.
+	for k, v := range event.Attributes.Extensions {
 		addHeader(req, "ce-"+k, v)
+	}
+
+	// Transport extensions.
+	for k, v := range event.TransportExtensions {
+		addHeader(req, k, v)
 	}
 
 	return req, nil

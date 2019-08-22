@@ -1,0 +1,20 @@
+# Minimum plain/text; charset=us-ascii
+ContextAttributes:
+  specversion: 0.3
+  type: io.cloudevents.minimum
+  id: conformance-0001
+  source: //github.com/cloudevents/conformance/yaml/v3.yaml
+  datacontenttype: text/plain; charset=us-ascii
+Data: |
+    Hello, World!
+---
+
+# Minimum plain/text; charset=utf-8
+ContextAttributes:
+  specversion: 0.3
+  type: io.cloudevents.minimum
+  id: conformance-0002
+  source: //github.com/cloudevents/conformance/yaml/v3.yaml
+  datacontenttype: text/plain; charset=utf-8
+Data: |
+  Hello, 🌎!

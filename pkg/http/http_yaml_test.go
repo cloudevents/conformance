@@ -11,7 +11,7 @@ import (
 
 func TestHTTP_Binary_v3_yaml(t *testing.T) {
 	server := httptest.NewServer(&dump{t: t})
-	events := event.FromYaml(event.File("v3.yaml"))
+	events := event.FromYaml(event.File("/"), true)
 	testServer := server.URL
 
 	for _, e := range events {
