@@ -7,7 +7,6 @@ ContextAttributes:
   datacontenttype: text/plain; charset=us-ascii
 Data: |
     Hello, World!
-
 ---
 # Minimum plain/text; charset=utf-8
 ContextAttributes:
@@ -18,7 +17,6 @@ ContextAttributes:
   datacontenttype: text/plain; charset=utf-8
 Data: |
   Hello, 🌎!
-
 ---
 # Minimum application/json; charset=utf-8
 ContextAttributes:
@@ -29,7 +27,6 @@ ContextAttributes:
   datacontenttype: application/json; charset=utf-8
 Data: |
   {"msg":"Hello, 🌎!"}
-
 ---
 # Minimum application/xml; charset=utf-8
 ContextAttributes:

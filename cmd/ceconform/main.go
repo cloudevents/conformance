@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/spf13/cobra"
@@ -17,7 +16,6 @@ func main() {
 			_ = cmd.Help()
 		},
 	}
-	fmt.Println("wat")
 	commands.AddConformanceCommands(cmds)
 
 	if err := cmds.Execute(); err != nil {
