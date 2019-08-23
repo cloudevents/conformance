@@ -1,0 +1,14 @@
+ContextAttributes:
+  specversion: 0.3
+  type: com.example.someevent
+  time: 2018-04-05T03:56:24Z
+  id: 4321-4321-4321
+  source: /mycontext/subcontext
+  Extensions:
+    comexampleextension1 : "value"
+    comexampleextension2 : |
+      {"othervalue": 5}
+TransportExtensions:
+  user-agent: "foo"
+Data: |
+    {"world":"hello"}
