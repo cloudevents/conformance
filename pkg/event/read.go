@@ -1,14 +1,11 @@
 package event
 
 import (
-	"fmt"
 	"gopkg.in/yaml.v2"
 	"io"
 	"io/ioutil"
 	"os"
 	"path"
-	"path/filepath"
-	"runtime"
 	"strings"
 )
 
@@ -23,13 +20,6 @@ func FromYaml(files string, recursive bool) []Event {
 		events = append(events, event...)
 	}
 	return events
-}
-
-func File(name string) string {
-	_, filename, _, _ := runtime.Caller(0)
-	dir := filepath.Dir(filename)
-	root := strings.Split(dir, "conformance")
-	return fmt.Sprintf("%s/conformance/yaml/%s", root[0], name)
 }
 
 func read(pathName string, recursive bool) ([]Event, error) {
