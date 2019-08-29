@@ -6,4 +6,5 @@ import (
 
 func AddConformanceCommands(topLevel *cobra.Command) {
 	addInvoke(topLevel)
+	addListener(topLevel)
 }

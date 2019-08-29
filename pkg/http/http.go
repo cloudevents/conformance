@@ -3,6 +3,7 @@ package http
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -45,6 +46,56 @@ func EventToRequest(url string, event event.Event) (*http.Request, error) {
 	}
 
 	return req, nil
+}
+
+func RequestToEvent(req *http.Request) (*event.Event, error) {
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		return nil, err
+	}
+	_ = body
+
+	event := &event.Event{
+		Data: string(body),
+	}
+
+	// CloudEvents attributes.
+	event.Attributes.SpecVersion = req.Header.Get("ce-specversion")
+	req.Header.Del("ce-specversion")
+	event.Attributes.Type = req.Header.Get("ce-type")
+	req.Header.Del("ce-type")
+	event.Attributes.Time = req.Header.Get("ce-time")
+	req.Header.Del("ce-time")
+	event.Attributes.ID = req.Header.Get("ce-id")
+	req.Header.Del("ce-id")
+	event.Attributes.Source = req.Header.Get("ce-source")
+	req.Header.Del("ce-source")
+	event.Attributes.Subject = req.Header.Get("ce-subject")
+	req.Header.Del("ce-subject")
+	event.Attributes.SchemaURL = req.Header.Get("ce-schemaurl")
+	req.Header.Del("ce-schemaurl")
+	event.Attributes.DataContentType = req.Header.Get("Content-Type")
+	req.Header.Del("Content-Type")
+	event.Attributes.DataContentEncoding = req.Header.Get("ce-datacontentencoding")
+	req.Header.Del("ce-datacontentencoding")
+
+	// CloudEvents attribute extensions.
+	event.Attributes.Extensions = make(map[string]string)
+	for k, _ := range req.Header {
+		if strings.HasPrefix(strings.ToLower(k), "ce-") {
+			event.Attributes.Extensions[k] = req.Header.Get(k)
+			req.Header.Del(k)
+		}
+	}
+
+	// Transport extensions.
+	event.TransportExtensions = make(map[string]string)
+	for k, _ := range req.Header {
+		event.TransportExtensions[k] = req.Header.Get(k)
+		req.Header.Del(k)
+	}
+
+	return event, nil
 }
 
 func Do(req *http.Request) error {
