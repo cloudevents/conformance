@@ -1,8 +1,10 @@
 package commands
 
 import (
+	"errors"
 	"github.com/spf13/cobra"
 	"log"
+	"net/url"
 
 	"github.com/cloudevents/conformance/pkg/commands/options"
 	"github.com/cloudevents/conformance/pkg/invoker"
@@ -15,9 +17,19 @@ func addInvoke(topLevel *cobra.Command) {
 		Use:   "invoke",
 		Short: "Invoke the host with the example input files.",
 		Example: `
-  ceconform invoke -t http://localhost:8008/ -f ./yaml/v0.3
+  cloudevents invoke http://localhost:8008/ -f ./yaml/v0.3
 `,
-		Args: cobra.NoArgs,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("requires a host argument")
+			}
+			u, err := url.Parse(args[0])
+			if err != nil {
+				return err
+			}
+			ho.URL = u
+			return nil
+		},
 		Run: func(cmd *cobra.Command, args []string) {
 			// Build up command.
 			i := &invoker.Invoker{
@@ -32,7 +44,6 @@ func addInvoke(topLevel *cobra.Command) {
 			}
 		},
 	}
-	options.AddHostArg(invoke, ho)
 	options.AddFilenameArg(invoke, fo)
 
 	topLevel.AddCommand(invoke)
