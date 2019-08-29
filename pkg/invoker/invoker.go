@@ -2,6 +2,7 @@ package invoker
 
 import (
 	"errors"
+	"net/url"
 	"strings"
 
 	"github.com/cloudevents/conformance/pkg/event"
@@ -9,7 +10,7 @@ import (
 )
 
 type Invoker struct {
-	URL       string
+	URL       *url.URL
 	Files     []string
 	Recursive bool
 }
@@ -20,7 +21,7 @@ func (i *Invoker) Do() error {
 	var errs = make([]string, 0)
 
 	for _, e := range events {
-		req, err := http.EventToRequest(i.URL, e)
+		req, err := http.EventToRequest(i.URL.String(), e)
 		if err != nil {
 			errs = append(errs, err.Error())
 			continue
