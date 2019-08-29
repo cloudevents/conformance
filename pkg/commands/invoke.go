@@ -15,7 +15,7 @@ func addInvoke(topLevel *cobra.Command) {
 		Use:   "invoke",
 		Short: "Invoke the host with the example input files.",
 		Example: `
-  ceconform invoke -t http://localhost:8008/ -f ./yaml/v0.3
+  cloudevents invoke -t http://localhost:8008/ -f ./yaml/v0.3
 `,
 		Args: cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
