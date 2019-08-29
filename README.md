@@ -27,5 +27,5 @@ go get -u github.com/cloudevents/conformance/cmd/cloudevents
 and send them to the target given.  
 
 ```shell
-cloudevents invoke -t http://localhost:8080 -f ./yaml/v0.3
+cloudevents invoke http://localhost:8080 -f ./yaml/v0.3
 ```
