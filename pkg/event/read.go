@@ -13,7 +13,13 @@ func FromYaml(files string, recursive bool) []Event {
 	pathNames := strings.Split(files, ",")
 	events := make([]Event, 0)
 	for _, pathName := range pathNames {
-		event, err := read(pathName, recursive)
+		var event []Event
+		var err error
+		if pathName == "-" {
+			event, err = decode(os.Stdin)
+		} else {
+			event, err = read(pathName, recursive)
+		}
 		if err != nil {
 			panic(err) // TODO: could not panic later.
 		}
