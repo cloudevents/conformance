@@ -2,6 +2,8 @@ package invoker
 
 import (
 	"errors"
+	"fmt"
+	"net/http/httputil"
 	"net/url"
 	"strings"
 
@@ -13,6 +15,7 @@ type Invoker struct {
 	URL       *url.URL
 	Files     []string
 	Recursive bool
+	Verbose   bool
 }
 
 func (i *Invoker) Do() error {
@@ -24,6 +27,19 @@ func (i *Invoker) Do() error {
 		req, err := http.EventToRequest(i.URL.String(), e)
 		if err != nil {
 			errs = append(errs, err.Error())
+			continue
+		}
+		if i.Verbose {
+			b, err := httputil.DumpRequestOut(req, true)
+			if err != nil {
+				fmt.Printf("Failed to dump request: %+v\n", err)
+			} else {
+				fmt.Println(string(b))
+			}
+		}
+
+		if i.URL.Host == "-" {
+			// Use "-" as a special hostname to indicate that actual requests should be skipped.
 			continue
 		}
 
