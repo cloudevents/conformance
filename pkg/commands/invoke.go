@@ -13,6 +13,7 @@ import (
 func addInvoke(topLevel *cobra.Command) {
 	ho := &options.HostOptions{}
 	fo := &options.FilenameOptions{}
+	vo := &options.VerboseOptions{}
 	invoke := &cobra.Command{
 		Use:   "invoke",
 		Short: "Invoke the host with the example input files.",
@@ -36,6 +37,7 @@ func addInvoke(topLevel *cobra.Command) {
 				URL:       ho.URL,
 				Files:     fo.Filenames,
 				Recursive: fo.Recursive,
+				Verbose:   vo.Verbose,
 			}
 
 			// Run it.
@@ -45,6 +47,7 @@ func addInvoke(topLevel *cobra.Command) {
 		},
 	}
 	options.AddFilenameArg(invoke, fo)
+	options.AddVerboseArg(invoke, vo)
 
 	topLevel.AddCommand(invoke)
 }
