@@ -14,7 +14,7 @@ type ContextAttributes struct {
 	ID          string `yaml:"id,omitempty"`
 	Source      string `yaml:"source,omitempty"`
 	Subject     string `yaml:"subject,omitempty"`
-	// SchemaURL removed in 1.0
+	// SchemaURL replaced by DataSchema in 1.0
 	SchemaURL  string `yaml:"schemaurl,omitempty"`
 	DataSchema string `yaml:"dataschema,omitempty"`
 	// DataContentEncoding removed in 1.0
