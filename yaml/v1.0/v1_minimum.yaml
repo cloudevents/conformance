@@ -1,59 +1,59 @@
 # Minimum plain/text; charset=us-ascii
 ContextAttributes:
-  specversion: 0.3
+  specversion: 1.0
   type: io.cloudevents.minimum
   id: conformance-0001
-  source: //github.com/cloudevents/cloudeventsconformance/yaml/v03.yaml
+  source: //github.com/cloudevents/cloudeventsconformance/yaml/v1.yaml
   datacontenttype: text/plain; charset=us-ascii
 Data: |
     Hello, World!
 ---
 # Minimum plain/text; charset=utf-8
 ContextAttributes:
-  specversion: 0.3
+  specversion: 1.0
   type: io.cloudevents.minimum
   id: conformance-0002
-  source: //github.com/cloudevents/cloudeventsconformance/yaml/v03.yaml
+  source: //github.com/cloudevents/cloudeventsconformance/yaml/v1.yaml
   datacontenttype: text/plain; charset=utf-8
 Data: |
   Hello, 🌎!
 ---
 # Minimum application/json; charset=utf-8
 ContextAttributes:
-  specversion: 0.3
+  specversion: 1.0
   type: io.cloudevents.minimum
   id: conformance-0003
-  source: //github.com/cloudevents/cloudeventsconformance/yaml/v03.yaml
+  source: //github.com/cloudevents/cloudeventsconformance/yaml/v1.yaml
   datacontenttype: application/json; charset=utf-8
 Data: |
   "Hello, 🌎!"
 ---
 # Minimum application/json; charset=utf-8
 ContextAttributes:
-  specversion: 0.3
+  specversion: 1.0
   type: io.cloudevents.minimum
   id: conformance-0004
-  source: //github.com/cloudevents/cloudeventsconformance/yaml/v03.yaml
+  source: //github.com/cloudevents/cloudeventsconformance/yaml/v1.yaml
   datacontenttype: application/json; charset=utf-8
 Data: |
   {"msg":"Hello, 🌎!"}
 ---
 # Minimum application/json; charset=utf-8
 ContextAttributes:
-  specversion: 0.3
+  specversion: 1.0
   type: io.cloudevents.minimum
   id: conformance-0005
-  source: //github.com/cloudevents/cloudeventsconformance/yaml/v03.yaml
+  source: //github.com/cloudevents/cloudeventsconformance/yaml/v1.yaml
   datacontenttype: application/json; charset=utf-8
 Data: |
   ["Hello","🌎!"]
 ---
 # Minimum application/xml; charset=utf-8
 ContextAttributes:
-  specversion: 0.3
+  specversion: 1.0
   type: io.cloudevents.minimum
   id: conformance-0006
-  source: //github.com/cloudevents/cloudeventsconformance/yaml/v03.yaml
+  source: //github.com/cloudevents/cloudeventsconformance/yaml/v1.yaml
   datacontenttype: application/xml; charset=utf-8
 Data: |
   <msg>Hello, 🌎!</msg>
