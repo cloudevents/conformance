@@ -2,15 +2,18 @@ package sender
 
 import (
 	"fmt"
-	"github.com/cloudevents/conformance/pkg/event"
-	"github.com/cloudevents/conformance/pkg/http"
 	"net/http/httputil"
 	"net/url"
+	"os"
+
+	"github.com/cloudevents/conformance/pkg/event"
+	"github.com/cloudevents/conformance/pkg/http"
 )
 
 type Sender struct {
 	URL     *url.URL
 	Event   event.Event
+	YAML    bool
 	Verbose bool
 }
 
@@ -22,10 +25,18 @@ func (s *Sender) Do() error {
 	if s.Verbose {
 		b, err := httputil.DumpRequestOut(req, true)
 		if err != nil {
-			fmt.Printf("Failed to dump request: %+v\n", err)
+			_, _ = fmt.Fprintf(os.Stderr, "Failed to dump request: %+v\n", err)
 		} else {
-			fmt.Println(string(b))
+			_, _ = fmt.Fprintf(os.Stderr, string(b))
 		}
+	}
+
+	yaml, err := event.ToYaml(s.Event)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "error converting event to yaml: %s\n", err.Error())
+	} else if s.YAML {
+		_, _ = fmt.Fprint(os.Stdout, string(yaml))
+		_, _ = fmt.Fprint(os.Stdout, "---\n")
 	}
 
 	if s.URL.Host == "-" {
