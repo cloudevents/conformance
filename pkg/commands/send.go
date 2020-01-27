@@ -1,0 +1,70 @@
+package commands
+
+import (
+	"errors"
+	"github.com/cloudevents/conformance/pkg/sender"
+	"github.com/spf13/cobra"
+	"log"
+	"net/url"
+	"strings"
+	"time"
+
+	"github.com/cloudevents/conformance/pkg/commands/options"
+)
+
+func addSend(topLevel *cobra.Command) {
+	ho := &options.HostOptions{}
+	eo := &options.EventOptions{}
+	vo := &options.VerboseOptions{}
+	invoke := &cobra.Command{
+		Use:   "send",
+		Short: "Send a cloudevent.",
+		Example: `
+  cloudevents send http://localhost:8008/ --id abc-123 --source cloudevents.conformance.tool --type foo.bar'
+`,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("requires a host argument")
+			}
+			u, err := url.Parse(args[0])
+			if err != nil {
+				return err
+			}
+			ho.URL = u
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			// Process time now.
+			if eo.Now {
+				eo.Event.Attributes.Time = time.Now().UTC().Format(time.RFC3339Nano)
+			}
+
+			// Process extensions.
+			if len(eo.Extensions) > 0 {
+				eo.Event.Attributes.Extensions = make(map[string]string, 0)
+				for _, ext := range eo.Extensions {
+					kv := strings.SplitN(ext, "=", 2)
+					if len(kv) == 2 {
+						eo.Event.Attributes.Extensions[kv[0]] = kv[1]
+					}
+				}
+			}
+
+			// Build up command.
+			i := &sender.Sender{
+				URL:     ho.URL,
+				Event:   eo.Event,
+				Verbose: vo.Verbose,
+			}
+
+			// Run it.
+			if err := i.Do(); err != nil {
+				log.Fatalf("error sending: %v", err)
+			}
+		},
+	}
+	options.AddEventArgs(invoke, eo)
+	options.AddVerboseArg(invoke, vo)
+
+	topLevel.AddCommand(invoke)
+}

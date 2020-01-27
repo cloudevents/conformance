@@ -23,13 +23,22 @@ go get -u github.com/cloudevents/conformance/cmd/cloudevents
 
 ## Usage
 
-`cloudevents` has two commands at the moment: `invoke` and `listen`. 
+`cloudevents` has three commands at the moment: `send`, `invoke` and `listen`. 
+
+
+### Send
+
+`send` will do a one-off creation of a cloudevent and send to a given target.
+
+```shell script
+cloudevents send http://localhost:8080 <TODO>
+```
 
 ### Invoke 
 
 `invoke` will read yaml files, convert them to http and send them to the given target.  
 
-```shell
+```shell script
 cloudevents invoke http://localhost:8080 -f ./yaml/v0.3
 ```
 
@@ -37,12 +46,12 @@ cloudevents invoke http://localhost:8080 -f ./yaml/v0.3
 
 `listen` will accept http request and write the converted yaml to stdout.  
 
-```shell
+```shell script
 cloudevents listen -v > got.yaml
 ```
 
 Optionally, you can forward the incoming request to a target.
 
-```shell
+```shell script
 cloudevents listen -v -t http://localhost:8181 > got.yaml
 ```
