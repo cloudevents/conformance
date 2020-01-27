@@ -2,12 +2,13 @@ package commands
 
 import (
 	"errors"
-	"github.com/cloudevents/conformance/pkg/sender"
-	"github.com/spf13/cobra"
 	"log"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/cloudevents/conformance/pkg/sender"
+	"github.com/spf13/cobra"
 
 	"github.com/cloudevents/conformance/pkg/commands/options"
 )
@@ -15,6 +16,7 @@ import (
 func addSend(topLevel *cobra.Command) {
 	ho := &options.HostOptions{}
 	eo := &options.EventOptions{}
+	yo := &options.YAMLOptions{}
 	vo := &options.VerboseOptions{}
 	invoke := &cobra.Command{
 		Use:   "send",
@@ -54,6 +56,7 @@ func addSend(topLevel *cobra.Command) {
 			i := &sender.Sender{
 				URL:     ho.URL,
 				Event:   eo.Event,
+				YAML:    yo.YAML,
 				Verbose: vo.Verbose,
 			}
 
@@ -64,6 +67,7 @@ func addSend(topLevel *cobra.Command) {
 		},
 	}
 	options.AddEventArgs(invoke, eo)
+	options.AddYAMLArg(invoke, yo)
 	options.AddVerboseArg(invoke, vo)
 
 	topLevel.AddCommand(invoke)
