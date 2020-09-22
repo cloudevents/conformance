@@ -5,8 +5,6 @@
 [![GoDoc](https://godoc.org/github.com/cloudevents/conformance?status.svg)](https://godoc.org/github.com/cloudevents/conformance)
 [![Go Report Card](https://goreportcard.com/badge/cloudevents/conformance)](https://goreportcard.com/report/cloudevents/conformance)
 
-_Work in progress._
-
 ## Installation
 
 `cloudevents` can be installed via:
