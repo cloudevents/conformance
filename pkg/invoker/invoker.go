@@ -6,6 +6,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/cloudevents/conformance/pkg/event"
 	"github.com/cloudevents/conformance/pkg/http"
@@ -14,6 +15,7 @@ import (
 type Invoker struct {
 	URL       *url.URL
 	Files     []string
+	Delay     *time.Duration
 	Recursive bool
 	Verbose   bool
 }
@@ -46,6 +48,10 @@ func (i *Invoker) Do() error {
 		if err := http.Do(req); err != nil {
 			errs = append(errs, err.Error())
 			continue
+		}
+
+		if i.Delay != nil {
+			time.Sleep(*i.Delay)
 		}
 	}
 	if len(errs) > 0 {
