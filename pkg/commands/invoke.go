@@ -2,17 +2,17 @@ package commands
 
 import (
 	"errors"
-	"github.com/spf13/cobra"
-	"log"
-	"net/url"
-
 	"github.com/cloudevents/conformance/pkg/commands/options"
 	"github.com/cloudevents/conformance/pkg/invoker"
+	"github.com/spf13/cobra"
+	"net/url"
+	"time"
 )
 
 func addInvoke(topLevel *cobra.Command) {
 	ho := &options.HostOptions{}
 	fo := &options.FilenameOptions{}
+	do := &options.DeliveryOptions{}
 	vo := &options.VerboseOptions{}
 	invoke := &cobra.Command{
 		Use:   "invoke",
@@ -31,7 +31,7 @@ func addInvoke(topLevel *cobra.Command) {
 			ho.URL = u
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			// Build up command.
 			i := &invoker.Invoker{
 				URL:       ho.URL,
@@ -40,13 +40,24 @@ func addInvoke(topLevel *cobra.Command) {
 				Verbose:   vo.Verbose,
 			}
 
+			// Add delay, if specified.
+			if len(do.Delay) > 0 {
+				d, err := time.ParseDuration(do.Delay)
+				if err != nil {
+					return err
+				}
+				i.Delay = &d
+			}
+
 			// Run it.
 			if err := i.Do(); err != nil {
-				log.Fatalf("error invoking target: %v", err)
+				return err
 			}
+			return nil
 		},
 	}
 	options.AddFilenameArg(invoke, fo)
+	options.AddDeliveryArg(invoke, do)
 	options.AddVerboseArg(invoke, vo)
 
 	topLevel.AddCommand(invoke)
