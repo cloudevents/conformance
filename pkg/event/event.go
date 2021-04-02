@@ -1,5 +1,7 @@
 package event
 
+type MutationFn func(Event) (Event, error)
+
 type Event struct {
 	Attributes          ContextAttributes `yaml:"ContextAttributes"`
 	TransportExtensions Extensions        `yaml:"TransportExtensions,omitempty"`

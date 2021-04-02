@@ -18,14 +18,32 @@ type Invoker struct {
 	Delay     *time.Duration
 	Recursive bool
 	Verbose   bool
+
+	// PreHook allows for mutation of the outbound event before translation to
+	// a to HTTP request.
+	PreHook event.MutationFn
+	// PostHook allows for recording of the outbound HTTP request and resulting
+	// response and/or error.
+	PostHook http.ResultsFn
 }
 
 func (i *Invoker) Do() error {
-	events := event.FromYaml(strings.Join(i.Files, ","), i.Recursive)
+	events, err := event.FromYaml(strings.Join(i.Files, ","), i.Recursive)
+	if err != nil {
+		return err
+	}
 
 	var errs = make([]string, 0)
 
 	for _, e := range events {
+		if i.PreHook != nil {
+			e, err = i.PreHook(e)
+			if err != nil {
+				errs = append(errs, err.Error())
+				continue
+			}
+		}
+
 		req, err := http.EventToRequest(i.URL.String(), e)
 		if err != nil {
 			errs = append(errs, err.Error())
@@ -45,7 +63,7 @@ func (i *Invoker) Do() error {
 			continue
 		}
 
-		if err := http.Do(req); err != nil {
+		if err := http.Do(req, i.PostHook); err != nil {
 			errs = append(errs, err.Error())
 			continue
 		}

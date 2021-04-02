@@ -15,10 +15,26 @@ type Sender struct {
 	Event   event.Event
 	YAML    bool
 	Verbose bool
+
+	// PreHook allows for mutation of the outbound event before translation to
+	// a to HTTP request.
+	PreHook event.MutationFn
+	// PostHook allows for recording of the outbound HTTP request and resulting
+	// response and/or error.
+	PostHook http.ResultsFn
 }
 
 func (s *Sender) Do() error {
-	req, err := http.EventToRequest(s.URL.String(), s.Event)
+	var err error
+	e := s.Event
+	if s.PreHook != nil {
+		e, err = s.PreHook(e)
+		if err != nil {
+			return err
+		}
+	}
+
+	req, err := http.EventToRequest(s.URL.String(), e)
 	if err != nil {
 		return err
 	}
@@ -31,7 +47,7 @@ func (s *Sender) Do() error {
 		}
 	}
 
-	yaml, err := event.ToYaml(s.Event)
+	yaml, err := event.ToYaml(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "error converting event to yaml: %s\n", err.Error())
 	} else if s.YAML {
@@ -44,7 +60,7 @@ func (s *Sender) Do() error {
 		return nil
 	}
 
-	if err := http.Do(req); err != nil {
+	if err := http.Do(req, s.PostHook); err != nil {
 		return err
 	}
 	return nil
