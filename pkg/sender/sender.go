@@ -43,7 +43,7 @@ func (s *Sender) Do() error {
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "Failed to dump request: %+v\n", err)
 		} else {
-			_, _ = fmt.Fprintf(os.Stderr, string(b))
+			_, _ = fmt.Fprint(os.Stderr, string(b))
 		}
 	}
 
