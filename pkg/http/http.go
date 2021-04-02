@@ -83,7 +83,7 @@ func RequestToEvent(req *http.Request) (*event.Event, error) {
 
 	// CloudEvents attribute extensions.
 	event.Attributes.Extensions = make(map[string]string)
-	for k, _ := range req.Header {
+	for k := range req.Header {
 		if strings.HasPrefix(strings.ToLower(k), "ce-") {
 			event.Attributes.Extensions[k[len("ce-"):]] = req.Header.Get(k)
 			req.Header.Del(k)
@@ -92,7 +92,7 @@ func RequestToEvent(req *http.Request) (*event.Event, error) {
 
 	// Transport extensions.
 	event.TransportExtensions = make(map[string]string)
-	for k, _ := range req.Header {
+	for k := range req.Header {
 		event.TransportExtensions[k] = req.Header.Get(k)
 		req.Header.Del(k)
 	}
