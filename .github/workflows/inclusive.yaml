@@ -2,7 +2,7 @@ name: Inclusive
 
 on:
   pull_request:
-    branches: [ 'master', 'release-*' ]
+    branches: [ 'master', 'main', 'release-*' ]
 
 jobs:
 

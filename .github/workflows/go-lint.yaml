@@ -2,9 +2,9 @@ name: Code Style
 
 on:
   push:
-    branches: [ 'master', 'release-*' ]
+    branches: [ 'master', 'main', 'release-*' ]
   pull_request:
-    branches: [ 'master', 'release-*' ]
+    branches: [ 'master', 'main', 'release-*' ]
 
 jobs:
 
@@ -34,4 +34,3 @@ jobs:
         with:
           version: v1.29
           working-directory: v2
-
