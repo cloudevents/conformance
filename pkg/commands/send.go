@@ -43,7 +43,7 @@ func addSend(topLevel *cobra.Command) {
 
 			// Process extensions.
 			if len(eo.Extensions) > 0 {
-				eo.Event.Attributes.Extensions = make(map[string]string, 0)
+				eo.Event.Attributes.Extensions = make(map[string]string)
 				for _, ext := range eo.Extensions {
 					kv := strings.SplitN(ext, "=", 2)
 					if len(kv) == 2 {
