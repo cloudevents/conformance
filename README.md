@@ -66,10 +66,10 @@ can be directed at the `listen` port or directly with `send`.
 
 Feature requests:
 
-- [ ] Add a `yaml` command that allows the same format of send but direct to
+- [x] Add a `yaml` command that allows the same format of send but direct to
       yaml.
 - [x] Add a `--yaml` flag to `send` that outputs what the definition of the sent
       event would look like in yaml.
-- [ ] Add `-f -` support for reading from STDIN as the file for yaml, this
+- [x] Add `-f -` support for reading from STDIN as the file for yaml, this
       allows for `send` | `invoke` chaining.
 - [ ] Add format support to `send` to select binary or structured.
