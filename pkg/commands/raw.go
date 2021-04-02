@@ -11,7 +11,7 @@ func addRaw(topLevel *cobra.Command) {
 	po := &options.PortOptions{}
 	raw := &cobra.Command{
 		Use:   "raw",
-		Short: "Dump the raw HTTP request to stdout.",
+		Short: "Dump the raw HTTP request to stdout. (For debugging HTTP requests.)",
 		Example: `
   cloudevents raw -P 8181
 `,

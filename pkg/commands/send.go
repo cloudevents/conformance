@@ -23,6 +23,7 @@ func addSend(topLevel *cobra.Command) {
 		Short: "Send a cloudevent.",
 		Example: `
   cloudevents send http://localhost:8080/ --id abc-123 --source cloudevents.conformance.tool --type foo.bar
+  cloudevents send http://localhost:8080/ --id 321-cba --source cloudevents.conformance.tool --type foo.json --mode structured
 `,
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {

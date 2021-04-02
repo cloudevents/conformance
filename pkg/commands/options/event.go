@@ -39,6 +39,7 @@ func wrap(text string, width int) string {
 }
 
 const (
+	httpSpecMode = `Mode of the outbound event. In the binary content mode, the value of the event data is placed into the HTTP request. In the structured content mode, event metadata attributes and event data are placed into the HTTP request body as JSON. [binary, structured]`
 	// Required
 	specTextID     = "Identifies the event. Producers MUST ensure that source + id is unique for each distinct event. If a duplicate event is re-sent (e.g. due to a network error) it MAY have the same id. Consumers MAY assume that Events with identical source and id are duplicates."
 	specTextSource = "Identifies the context in which an event happened. Often this will include information such as the type of the event source, the organization publishing the event or the process that produced the event. The exact syntax and semantics behind the data encoded in the URI is defined by the event producer."
@@ -53,6 +54,8 @@ const (
 )
 
 func AddEventArgs(cmd *cobra.Command, eo *EventOptions) {
+	// Content
+	cmd.Flags().StringVar(&eo.Event.Mode, "mode", "", wrap80(httpSpecMode))
 
 	// Required fields.
 

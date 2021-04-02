@@ -2,6 +2,7 @@ package http
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -19,8 +20,73 @@ func addHeader(req *http.Request, key, value string) {
 	}
 }
 
-func EventToRequest(url string, event event.Event) (*http.Request, error) {
+func addStructured(env map[string]interface{}, key, value string) {
+	value = strings.TrimSpace(value)
+	if value != "" {
+		env[key] = value
+	}
+}
 
+func EventToRequest(url string, in event.Event) (*http.Request, error) {
+	switch in.Mode {
+	case event.StructuredMode:
+		return structuredEventToRequest(url, in)
+	case event.DefaultMode, event.BinaryMode:
+		return binaryEventToRequest(url, in)
+	}
+	return nil, fmt.Errorf("unknown content mode: %q", in.Mode)
+}
+
+func structuredEventToRequest(url string, event event.Event) (*http.Request, error) {
+	env := make(map[string]interface{})
+
+	// CloudEvents attributes.
+	addStructured(env, "specversion", event.Attributes.SpecVersion)
+	addStructured(env, "type", event.Attributes.Type)
+	addStructured(env, "time", event.Attributes.Time)
+	addStructured(env, "id", event.Attributes.ID)
+	addStructured(env, "source", event.Attributes.Source)
+	addStructured(env, "subject", event.Attributes.Subject)
+	addStructured(env, "schemaurl", event.Attributes.SchemaURL)
+	addStructured(env, "datacontenttype", event.Attributes.DataContentType)
+	addStructured(env, "datacontentencoding", event.Attributes.DataContentEncoding)
+
+	// CloudEvents attribute extensions.
+	for k, v := range event.Attributes.Extensions {
+		addStructured(env, k, v)
+	}
+
+	// TODO: based on datacontenttype, we should parse data and then set the result in the envelope.
+	addStructured(env, "data", event.Data)
+
+	// To JSON.
+	body, err := json.Marshal(env)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+
+	// Transport extensions.
+	hasContentType := false
+	for k, v := range event.TransportExtensions {
+		if strings.EqualFold(v, "Content-Type") {
+			hasContentType = true
+		}
+		addHeader(req, k, v)
+	}
+
+	if !hasContentType {
+		addHeader(req, "Content-Type", "application/cloudevents+json; charset=UTF-8")
+	}
+
+	return req, nil
+}
+
+func binaryEventToRequest(url string, event event.Event) (*http.Request, error) {
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(event.Data)))
 	if err != nil {
 		return nil, err

@@ -19,9 +19,9 @@ func (raw *Raw) Do() error {
 func (raw *Raw) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	if reqBytes, err := httputil.DumpRequest(r, true); err == nil {
-		_, _ = fmt.Fprintf(raw.Out, "%+v", string(reqBytes))
+		_, _ = fmt.Fprintf(raw.Out, "%+v\n", string(reqBytes))
 	} else {
-		_, _ = fmt.Fprintf(raw.Out, "Failed to call DumpRequest: %s", err)
+		_, _ = fmt.Fprintf(raw.Out, "Failed to call DumpRequest: %s\n", err)
 	}
 	_, _ = fmt.Fprintln(raw.Out, "================")
 }
