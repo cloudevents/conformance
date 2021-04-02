@@ -1,3 +1,4 @@
+Mode: binary
 ContextAttributes:
   specversion: 1.0
   type: com.example.someevent
@@ -12,3 +13,19 @@ TransportExtensions:
   user-agent: "foo"
 Data: |
     {"world":"hello"}
+---
+Mode: structured
+ContextAttributes:
+  specversion: 1.0
+  type: com.example.someevent
+  time: 2018-04-05T03:56:24Z
+  id: 4321-4321-4321
+  source: /mycontext/subcontext
+  Extensions:
+    comexampleextension1 : "value"
+    comexampleextension2 : |
+      {"othervalue": 5}
+TransportExtensions:
+  user-agent: "foo"
+Data: |
+  {"world":"hello"}

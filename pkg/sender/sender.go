@@ -5,6 +5,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/cloudevents/conformance/pkg/event"
 	"github.com/cloudevents/conformance/pkg/http"
@@ -14,6 +15,7 @@ type Sender struct {
 	URL     *url.URL
 	Event   event.Event
 	YAML    bool
+	Delay   *time.Duration
 	Verbose bool
 
 	// PreHook allows for mutation of the outbound event before translation to
@@ -25,6 +27,10 @@ type Sender struct {
 }
 
 func (s *Sender) Do() error {
+	if s.Delay != nil {
+		time.Sleep(*s.Delay)
+	}
+
 	var err error
 	e := s.Event
 	if s.PreHook != nil {

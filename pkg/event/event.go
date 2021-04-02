@@ -2,7 +2,15 @@ package event
 
 type MutationFn func(Event) (Event, error)
 
+// Mode of encoding.
+const (
+	DefaultMode    = ""
+	BinaryMode     = "binary"
+	StructuredMode = "structured"
+)
+
 type Event struct {
+	Mode                string            `yaml:"Mode,omitempty"`
 	Attributes          ContextAttributes `yaml:"ContextAttributes"`
 	TransportExtensions Extensions        `yaml:"TransportExtensions,omitempty"`
 	Data                string            `yaml:"Data"`
