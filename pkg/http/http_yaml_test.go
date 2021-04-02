@@ -39,7 +39,10 @@ func TestHTTP_Binary_v3_yaml(t *testing.T) {
 	defer done()
 
 	server := httptest.NewServer(&dump{t: t})
-	events := event.FromYaml(tmp, true)
+	events, err := event.FromYaml(tmp, true)
+	if err != nil {
+		t.Error(err)
+	}
 	testServer := server.URL
 
 	for _, e := range events {
@@ -48,7 +51,7 @@ func TestHTTP_Binary_v3_yaml(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if err := Do(req); err != nil {
+		if err := Do(req, nil); err != nil {
 			t.Fatal(err)
 		}
 	}

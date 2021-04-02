@@ -55,7 +55,7 @@ func (l *Listener) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if l.Tee != nil {
 		if req, err := cfhttp.EventToRequest(l.Tee.String(), *ce); err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "error converting event to request: %s\n", err.Error())
-		} else if err := cfhttp.Do(req); err != nil {
+		} else if err := cfhttp.Do(req, nil); err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "error sending event to tee: %s\n", err.Error())
 		}
 	}

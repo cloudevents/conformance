@@ -1,0 +1,22 @@
+name: Inclusive
+
+on:
+  pull_request:
+    branches: [ 'master', 'main', 'release-*' ]
+
+jobs:
+
+  language:
+    name: Language
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Woke
+        uses: get-woke/woke-action-reviewdog@v0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review

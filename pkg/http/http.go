@@ -10,6 +10,8 @@ import (
 	"github.com/cloudevents/conformance/pkg/event"
 )
 
+type ResultsFn func(*http.Request, *http.Response, error)
+
 func addHeader(req *http.Request, key, value string) {
 	value = strings.TrimSpace(value)
 	if value != "" {
@@ -98,8 +100,14 @@ func RequestToEvent(req *http.Request) (*event.Event, error) {
 	return event, nil
 }
 
-func Do(req *http.Request) error {
+func Do(req *http.Request, hook ResultsFn) error {
 	resp, err := http.DefaultClient.Do(req)
+
+	if hook != nil {
+		// Non-blocking.
+		go hook(req, resp, err)
+	}
+
 	if err != nil {
 		return err
 	}

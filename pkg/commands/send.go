@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudevents/conformance/pkg/sender"
 	"github.com/spf13/cobra"
 
 	"github.com/cloudevents/conformance/pkg/commands/options"
+	"github.com/cloudevents/conformance/pkg/sender"
 )
 
 func addSend(topLevel *cobra.Command) {
@@ -22,7 +22,7 @@ func addSend(topLevel *cobra.Command) {
 		Use:   "send",
 		Short: "Send a cloudevent.",
 		Example: `
-  cloudevents send http://localhost:8008/ --id abc-123 --source cloudevents.conformance.tool --type foo.bar'
+  cloudevents send http://localhost:8080/ --id abc-123 --source cloudevents.conformance.tool --type foo.bar
 `,
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {

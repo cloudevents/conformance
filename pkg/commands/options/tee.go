@@ -1,8 +1,9 @@
 package options
 
 import (
-	"github.com/spf13/cobra"
 	"net/url"
+
+	"github.com/spf13/cobra"
 )
 
 // TeeOptions

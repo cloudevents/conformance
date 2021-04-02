@@ -2,11 +2,12 @@ package commands
 
 import (
 	"errors"
+	"net/url"
+	"time"
+
 	"github.com/cloudevents/conformance/pkg/commands/options"
 	"github.com/cloudevents/conformance/pkg/invoker"
 	"github.com/spf13/cobra"
-	"net/url"
-	"time"
 )
 
 func addInvoke(topLevel *cobra.Command) {
