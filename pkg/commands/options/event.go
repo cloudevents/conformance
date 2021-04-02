@@ -3,8 +3,9 @@ package options
 import (
 	"strings"
 
-	"github.com/cloudevents/conformance/pkg/event"
 	"github.com/spf13/cobra"
+
+	"github.com/cloudevents/conformance/pkg/event"
 )
 
 // EventOptions

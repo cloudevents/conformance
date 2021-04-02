@@ -1,9 +1,10 @@
 package commands
 
 import (
-	"github.com/spf13/cobra"
 	"log"
 	"net/url"
+
+	"github.com/spf13/cobra"
 
 	"github.com/cloudevents/conformance/pkg/commands/options"
 	"github.com/cloudevents/conformance/pkg/listener"
