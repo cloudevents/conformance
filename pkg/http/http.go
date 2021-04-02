@@ -57,7 +57,13 @@ func structuredEventToRequest(url string, event event.Event) (*http.Request, err
 	}
 
 	// TODO: based on datacontenttype, we should parse data and then set the result in the envelope.
-	addStructured(env, "data", event.Data)
+	if len(event.Data) > 0 {
+		data := json.RawMessage{}
+		if err := json.Unmarshal([]byte(event.Data), &data); err != nil {
+			return nil, err
+		}
+		env["data"] = data
+	}
 
 	// To JSON.
 	body, err := json.Marshal(env)
@@ -117,6 +123,80 @@ func binaryEventToRequest(url string, event event.Event) (*http.Request, error) 
 }
 
 func RequestToEvent(req *http.Request) (*event.Event, error) {
+	if strings.HasPrefix(req.Header.Get("Content-Type"), "application/cloudevents+json") {
+		req.Header.Del("Content-Type")
+		return structuredRequestToEvent(req)
+	}
+	return binaryRequestToEvent(req)
+}
+
+func structuredRequestToEvent(req *http.Request) (*event.Event, error) {
+	out := &event.Event{
+		Mode: event.StructuredMode,
+	}
+
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		return nil, err
+	}
+	_ = body
+
+	env := make(map[string]json.RawMessage)
+	if err := json.Unmarshal(body, &env); err != nil {
+		return nil, err
+	}
+
+	insert := func(key string, into *string) {
+		if _, found := env[key]; found {
+			if err := json.Unmarshal(env[key], into); err != nil {
+				*into = err.Error()
+			}
+			delete(env, key)
+		}
+	}
+
+	// CloudEvents attributes.
+	insert("specversion", &out.Attributes.SpecVersion)
+	insert("type", &out.Attributes.Type)
+	insert("time", &out.Attributes.Time)
+	insert("id", &out.Attributes.ID)
+	insert("source", &out.Attributes.Source)
+	insert("subject", &out.Attributes.Subject)
+	insert("schemaurl", &out.Attributes.SchemaURL)
+	insert("datacontenttype", &out.Attributes.DataContentType)
+	insert("datacontentencoding", &out.Attributes.DataContentEncoding)
+
+	// CloudEvents Data.
+	if _, found := env["data"]; found {
+		out.Data = string(env["data"]) + "\n"
+		delete(env, "data")
+	}
+
+	// CloudEvents attribute extensions.
+	out.Attributes.Extensions = make(map[string]string)
+	for key, b := range env {
+		var into string
+		if err := json.Unmarshal(b, &into); err != nil {
+			into = err.Error()
+		}
+		out.Attributes.Extensions[key] = into
+		delete(env, key)
+	}
+
+	// Transport extensions.
+	out.TransportExtensions = make(map[string]string)
+	for k := range req.Header {
+		if k == "Accept-Encoding" || k == "Content-Length" {
+			continue
+		}
+		out.TransportExtensions[k] = req.Header.Get(k)
+		req.Header.Del(k)
+	}
+
+	return out, nil
+}
+
+func binaryRequestToEvent(req *http.Request) (*event.Event, error) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		return nil, err
@@ -160,6 +240,9 @@ func RequestToEvent(req *http.Request) (*event.Event, error) {
 	// Transport extensions.
 	out.TransportExtensions = make(map[string]string)
 	for k := range req.Header {
+		if k == "Accept-Encoding" || k == "Content-Length" {
+			continue
+		}
 		out.TransportExtensions[k] = req.Header.Get(k)
 		req.Header.Del(k)
 	}
