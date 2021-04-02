@@ -51,10 +51,7 @@ func addInvoke(topLevel *cobra.Command) {
 			}
 
 			// Run it.
-			if err := i.Do(); err != nil {
-				return err
-			}
-			return nil
+			return i.Do()
 		},
 	}
 	options.AddFilenameArg(invoke, fo)

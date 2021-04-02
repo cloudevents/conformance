@@ -57,47 +57,48 @@ func RequestToEvent(req *http.Request) (*event.Event, error) {
 	}
 	_ = body
 
-	event := &event.Event{
+	out := &event.Event{
+		Mode: event.BinaryMode,
 		Data: string(body),
 	}
 
 	// CloudEvents attributes.
-	event.Attributes.SpecVersion = req.Header.Get("ce-specversion")
+	out.Attributes.SpecVersion = req.Header.Get("ce-specversion")
 	req.Header.Del("ce-specversion")
-	event.Attributes.Type = req.Header.Get("ce-type")
+	out.Attributes.Type = req.Header.Get("ce-type")
 	req.Header.Del("ce-type")
-	event.Attributes.Time = req.Header.Get("ce-time")
+	out.Attributes.Time = req.Header.Get("ce-time")
 	req.Header.Del("ce-time")
-	event.Attributes.ID = req.Header.Get("ce-id")
+	out.Attributes.ID = req.Header.Get("ce-id")
 	req.Header.Del("ce-id")
-	event.Attributes.Source = req.Header.Get("ce-source")
+	out.Attributes.Source = req.Header.Get("ce-source")
 	req.Header.Del("ce-source")
-	event.Attributes.Subject = req.Header.Get("ce-subject")
+	out.Attributes.Subject = req.Header.Get("ce-subject")
 	req.Header.Del("ce-subject")
-	event.Attributes.SchemaURL = req.Header.Get("ce-schemaurl")
+	out.Attributes.SchemaURL = req.Header.Get("ce-schemaurl")
 	req.Header.Del("ce-schemaurl")
-	event.Attributes.DataContentType = req.Header.Get("Content-Type")
+	out.Attributes.DataContentType = req.Header.Get("Content-Type")
 	req.Header.Del("Content-Type")
-	event.Attributes.DataContentEncoding = req.Header.Get("ce-datacontentencoding")
+	out.Attributes.DataContentEncoding = req.Header.Get("ce-datacontentencoding")
 	req.Header.Del("ce-datacontentencoding")
 
 	// CloudEvents attribute extensions.
-	event.Attributes.Extensions = make(map[string]string)
+	out.Attributes.Extensions = make(map[string]string)
 	for k := range req.Header {
 		if strings.HasPrefix(strings.ToLower(k), "ce-") {
-			event.Attributes.Extensions[k[len("ce-"):]] = req.Header.Get(k)
+			out.Attributes.Extensions[k[len("ce-"):]] = req.Header.Get(k)
 			req.Header.Del(k)
 		}
 	}
 
 	// Transport extensions.
-	event.TransportExtensions = make(map[string]string)
+	out.TransportExtensions = make(map[string]string)
 	for k := range req.Header {
-		event.TransportExtensions[k] = req.Header.Get(k)
+		out.TransportExtensions[k] = req.Header.Get(k)
 		req.Header.Del(k)
 	}
 
-	return event, nil
+	return out, nil
 }
 
 func Do(req *http.Request, hook ResultsFn) error {

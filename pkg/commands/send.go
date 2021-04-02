@@ -2,7 +2,6 @@ package commands
 
 import (
 	"errors"
-	"log"
 	"net/url"
 	"strings"
 	"time"
@@ -16,6 +15,7 @@ import (
 func addSend(topLevel *cobra.Command) {
 	ho := &options.HostOptions{}
 	eo := &options.EventOptions{}
+	do := &options.DeliveryOptions{}
 	yo := &options.YAMLOptions{}
 	vo := &options.VerboseOptions{}
 	invoke := &cobra.Command{
@@ -35,7 +35,7 @@ func addSend(topLevel *cobra.Command) {
 			ho.URL = u
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			// Process time now.
 			if eo.Now {
 				eo.Event.Attributes.Time = time.Now().UTC().Format(time.RFC3339Nano)
@@ -60,15 +60,23 @@ func addSend(topLevel *cobra.Command) {
 				Verbose: vo.Verbose,
 			}
 
-			// Run it.
-			if err := i.Do(); err != nil {
-				log.Fatalf("error sending: %v", err)
+			// Add delay, if specified.
+			if len(do.Delay) > 0 {
+				d, err := time.ParseDuration(do.Delay)
+				if err != nil {
+					return err
+				}
+				i.Delay = &d
 			}
+
+			// Run it.
+			return i.Do()
 		},
 	}
 	options.AddEventArgs(invoke, eo)
 	options.AddYAMLArg(invoke, yo)
 	options.AddVerboseArg(invoke, vo)
+	options.AddDeliveryArg(invoke, do)
 
 	topLevel.AddCommand(invoke)
 }
