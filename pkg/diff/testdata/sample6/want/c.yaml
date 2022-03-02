@@ -1,0 +1,3 @@
+ContextAttributes:
+  type: com.example.someevent.c
+  source: /mycontext/subcontext

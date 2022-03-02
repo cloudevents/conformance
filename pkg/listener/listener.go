@@ -6,14 +6,17 @@
 package listener
 
 import (
+	"context"
 	"fmt"
-	"github.com/cloudevents/conformance/pkg/event"
-	cfhttp "github.com/cloudevents/conformance/pkg/http"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/cloudevents/conformance/pkg/event"
+	cfhttp "github.com/cloudevents/conformance/pkg/http"
 )
 
 type Listener struct {
@@ -27,16 +30,41 @@ type Listener struct {
 	ring    *ringBuffer
 }
 
-func (l *Listener) Do() error {
-	addr := fmt.Sprintf(":%d", l.Port) // TODO: do this listen thing for port 0
+func (l *Listener) Do(ctx context.Context) error {
+	addr := fmt.Sprintf(":%d", l.Port)
+	tcp, err := net.Listen("tcp", addr)
+	if err != nil {
+		return err
+	}
+
+	if l.Port == 0 {
+		l.Port = tcp.Addr().(*net.TCPAddr).Port
+		addr = fmt.Sprintf(":%d", l.Port)
+	}
 
 	l.ring = newRingBuffer(l.History, l.Retain)
 
 	_, _ = fmt.Fprintf(os.Stderr, "listening on %s\n", addr)
-	if err := http.ListenAndServe(addr, l); err != nil {
-		return err
+
+	var serveErr error
+	server := &http.Server{Handler: l}
+
+	ctx, cancel := context.WithCancel(ctx)
+
+	// Thread for HTTP Server.
+	go func() {
+		serveErr = server.Serve(tcp)
+		cancel()
+	}()
+
+	// Block until context is canceled.
+	select {
+	case <-ctx.Done():
+		_ = server.Close()
+		_ = tcp.Close()
 	}
-	return nil
+
+	return serveErr
 }
 
 func (l *Listener) ServeHTTP(w http.ResponseWriter, req *http.Request) {
