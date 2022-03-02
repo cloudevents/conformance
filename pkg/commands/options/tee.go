@@ -12,7 +12,7 @@ type TeeOptions struct {
 	URL       *url.URL
 }
 
-func AddTeeArg(cmd *cobra.Command, to *TeeOptions) {
-	cmd.Flags().StringVarP(&to.URLString, "tee", "t", "",
+func (o *TeeOptions) AddFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVarP(&o.URLString, "tee", "t", "",
 		"Tee to a host url")
 }

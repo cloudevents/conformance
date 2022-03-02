@@ -54,9 +54,9 @@ func addInvoke(topLevel *cobra.Command) {
 			return i.Do()
 		},
 	}
-	options.AddFilenameArg(invoke, fo)
-	options.AddDeliveryArg(invoke, do)
-	options.AddVerboseArg(invoke, vo)
+	fo.AddFlags(invoke)
+	do.AddFlags(invoke)
+	vo.AddFlags(invoke)
 
 	topLevel.AddCommand(invoke)
 }

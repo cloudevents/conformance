@@ -53,38 +53,39 @@ const (
 	specTextData            = "The event payload. This specification does not place any restriction on the type of this information. It is encoded into a media format which is specified by the datacontenttype attribute (e.g. application/json), and adheres to the dataschema format when those respective attributes are present."
 )
 
-func AddEventArgs(cmd *cobra.Command, eo *EventOptions) {
+func (o *EventOptions) AddFlags(cmd *cobra.Command) {
+
 	// Content
-	cmd.Flags().StringVar(&eo.Event.Mode, "mode", "", wrap80(httpSpecMode))
+	cmd.Flags().StringVar(&o.Event.Mode, "mode", "", wrap80(httpSpecMode))
 
 	// Required fields.
 
 	// Lock to cloudevents 1.0 for now.
-	eo.Event.Attributes.SpecVersion = "1.0"
+	o.Event.Attributes.SpecVersion = "1.0"
 
-	cmd.Flags().StringVar(&eo.Event.Attributes.ID, "id", "", wrap80(specTextID))
+	cmd.Flags().StringVar(&o.Event.Attributes.ID, "id", "", wrap80(specTextID))
 	_ = cmd.MarkFlagRequired("id")
 
-	cmd.Flags().StringVar(&eo.Event.Attributes.Type, "type", "", wrap80(specTextType))
+	cmd.Flags().StringVar(&o.Event.Attributes.Type, "type", "", wrap80(specTextType))
 	_ = cmd.MarkFlagRequired("type")
 
-	cmd.Flags().StringVar(&eo.Event.Attributes.Source, "source", "", wrap80(specTextSource))
+	cmd.Flags().StringVar(&o.Event.Attributes.Source, "source", "", wrap80(specTextSource))
 	_ = cmd.MarkFlagRequired("source")
 
 	// Optional Fields.
-	cmd.Flags().StringVar(&eo.Event.Attributes.DataContentType, "datacontenttype", "", wrap80(specTextDataContentType))
+	cmd.Flags().StringVar(&o.Event.Attributes.DataContentType, "datacontenttype", "", wrap80(specTextDataContentType))
 
-	cmd.Flags().StringVar(&eo.Event.Attributes.DataSchema, "dataschema", "", wrap80(specTextDataSchema))
+	cmd.Flags().StringVar(&o.Event.Attributes.DataSchema, "dataschema", "", wrap80(specTextDataSchema))
 
-	cmd.Flags().StringVar(&eo.Event.Attributes.Subject, "subject", "", wrap80(specTextSubject))
+	cmd.Flags().StringVar(&o.Event.Attributes.Subject, "subject", "", wrap80(specTextSubject))
 
-	cmd.Flags().StringVar(&eo.Event.Attributes.Time, "time", "", wrap80(specTextTime))
+	cmd.Flags().StringVar(&o.Event.Attributes.Time, "time", "", wrap80(specTextTime))
 
-	cmd.Flags().BoolVar(&eo.Now, "timenow", false, "Set time to now.")
+	cmd.Flags().BoolVar(&o.Now, "timenow", false, "Set time to now.")
 
 	// Extensions Fields.
-	cmd.Flags().StringSliceVar(&eo.Extensions, "extension", nil, wrap80(specTextExtensions+" Example: key=value."))
+	cmd.Flags().StringSliceVar(&o.Extensions, "extension", nil, wrap80(specTextExtensions+" Example: key=value."))
 
 	// Data.
-	cmd.Flags().StringVar(&eo.Event.Data, "data", "", wrap80(specTextData))
+	cmd.Flags().StringVar(&o.Event.Data, "data", "", wrap80(specTextData))
 }
