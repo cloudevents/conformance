@@ -10,9 +10,9 @@ type FilenameOptions struct {
 	Recursive bool
 }
 
-func AddFilenameArg(cmd *cobra.Command, fo *FilenameOptions) {
-	cmd.Flags().StringSliceVarP(&fo.Filenames, "filename", "f", fo.Filenames,
+func (o *FilenameOptions) AddFlags(cmd *cobra.Command) {
+	cmd.Flags().StringSliceVarP(&o.Filenames, "filename", "f", o.Filenames,
 		"Filename or directory to use")
-	cmd.Flags().BoolVarP(&fo.Recursive, "recursive", "R", fo.Recursive,
+	cmd.Flags().BoolVarP(&o.Recursive, "recursive", "R", o.Recursive,
 		"Process the directory used in -f, --filename recursively.")
 }

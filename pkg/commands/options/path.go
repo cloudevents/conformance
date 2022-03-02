@@ -7,7 +7,7 @@ type PathOptions struct {
 	Path string
 }
 
-func AddPathArg(cmd *cobra.Command, po *PathOptions) {
-	cmd.Flags().StringVarP(&po.Path, "path", "p", "/",
+func (o *PathOptions) AddFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVarP(&o.Path, "path", "p", "/",
 		"Path to use")
 }

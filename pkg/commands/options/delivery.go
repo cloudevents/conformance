@@ -7,7 +7,7 @@ type DeliveryOptions struct {
 	Delay string
 }
 
-func AddDeliveryArg(cmd *cobra.Command, po *DeliveryOptions) {
-	cmd.Flags().StringVar(&po.Delay, "delay", "",
+func (o *DeliveryOptions) AddFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVar(&o.Delay, "delay", "",
 		"Delay between sending events such as `300ms`. Valid time units are `ns`, `us`, `ms`, `s`, `m`, `h`.")
 }

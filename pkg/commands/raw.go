@@ -24,7 +24,7 @@ func addRaw(topLevel *cobra.Command) {
 			return r.Do()
 		},
 	}
-	options.AddPortArg(raw, po)
+	po.AddFlags(raw)
 
 	topLevel.AddCommand(raw)
 }

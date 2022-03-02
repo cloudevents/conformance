@@ -47,10 +47,10 @@ func addListener(topLevel *cobra.Command) {
 			}
 		},
 	}
-	options.AddPortArg(listen, po)
-	options.AddPathArg(listen, pa)
-	options.AddVerboseArg(listen, vo)
-	options.AddTeeArg(listen, to)
+	po.AddFlags(listen)
+	pa.AddFlags(listen)
+	vo.AddFlags(listen)
+	to.AddFlags(listen)
 
 	topLevel.AddCommand(listen)
 }

@@ -7,7 +7,7 @@ type PortOptions struct {
 	Port int
 }
 
-func AddPortArg(cmd *cobra.Command, po *PortOptions) {
-	cmd.Flags().IntVarP(&po.Port, "port", "P", 8080,
+func (o *PortOptions) AddFlags(cmd *cobra.Command) {
+	cmd.Flags().IntVarP(&o.Port, "port", "P", 8080,
 		"Port to use")
 }

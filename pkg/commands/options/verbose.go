@@ -7,7 +7,7 @@ type VerboseOptions struct {
 	Verbose bool
 }
 
-func AddVerboseArg(cmd *cobra.Command, vo *VerboseOptions) {
-	cmd.Flags().BoolVarP(&vo.Verbose, "verbose", "v", false,
+func (o *VerboseOptions) AddFlags(cmd *cobra.Command) {
+	cmd.Flags().BoolVarP(&o.Verbose, "verbose", "v", false,
 		"Output more debug info to stderr")
 }

@@ -18,6 +18,7 @@ func addSend(topLevel *cobra.Command) {
 	do := &options.DeliveryOptions{}
 	yo := &options.YAMLOptions{}
 	vo := &options.VerboseOptions{}
+
 	invoke := &cobra.Command{
 		Use:   "send",
 		Short: "Send a cloudevent.",
@@ -74,10 +75,10 @@ func addSend(topLevel *cobra.Command) {
 			return i.Do()
 		},
 	}
-	options.AddEventArgs(invoke, eo)
-	options.AddYAMLArg(invoke, yo)
-	options.AddVerboseArg(invoke, vo)
-	options.AddDeliveryArg(invoke, do)
+	eo.AddFlags(invoke)
+	yo.AddFlags(invoke)
+	vo.AddFlags(invoke)
+	do.AddFlags(invoke)
 
 	topLevel.AddCommand(invoke)
 }
