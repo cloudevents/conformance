@@ -19,6 +19,7 @@ func addListener(topLevel *cobra.Command) {
 	po := &options.PortOptions{}
 	pa := &options.PathOptions{}
 	to := &options.TeeOptions{}
+	ho := &options.HistoryOptions{}
 	vo := &options.VerboseOptions{}
 	listen := &cobra.Command{
 		Use:   "listen",
@@ -43,6 +44,7 @@ func addListener(topLevel *cobra.Command) {
 				Port:    po.Port,
 				Path:    pa.Path,
 				Tee:     to.URL,
+				History: ho.Length,
 				Verbose: vo.Verbose,
 			}
 
@@ -55,6 +57,7 @@ func addListener(topLevel *cobra.Command) {
 	po.AddFlags(listen)
 	pa.AddFlags(listen)
 	vo.AddFlags(listen)
+	ho.AddFlags(listen)
 	to.AddFlags(listen)
 
 	topLevel.AddCommand(listen)
