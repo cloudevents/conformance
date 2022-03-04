@@ -45,6 +45,7 @@ func addListener(topLevel *cobra.Command) {
 				Path:    pa.Path,
 				Tee:     to.URL,
 				History: ho.Length,
+				Retain:  ho.Retain,
 				Verbose: vo.Verbose,
 			}
 

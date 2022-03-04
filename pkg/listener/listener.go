@@ -7,13 +7,13 @@ package listener
 
 import (
 	"fmt"
+	"github.com/cloudevents/conformance/pkg/event"
+	cfhttp "github.com/cloudevents/conformance/pkg/http"
 	"net/http"
 	"net/url"
 	"os"
-	"sync"
-
-	"github.com/cloudevents/conformance/pkg/event"
-	cfhttp "github.com/cloudevents/conformance/pkg/http"
+	"strconv"
+	"time"
 )
 
 type Listener struct {
@@ -23,49 +23,14 @@ type Listener struct {
 	Tee     *url.URL
 
 	History int
+	Retain  bool
 	ring    *ringBuffer
-}
-
-type ringBuffer struct {
-	count int
-	out   chan event.Event
-	mux   sync.Mutex
-}
-
-func (r *ringBuffer) Add(ce event.Event) {
-	r.mux.Lock()
-	defer r.mux.Unlock()
-
-	select {
-	// If we can, write to out.
-	case r.out <- ce:
-		r.count++
-		// Done.
-	default:
-		// If we got blocked, read one from out and write the new event.
-		<-r.out
-		r.out <- ce
-	}
-}
-
-func (r *ringBuffer) All() []event.Event {
-	all := make([]event.Event, 0, r.count)
-	for r.count > 0 {
-		r.mux.Lock()
-
-		ce := <-r.out
-		all = append(all, ce)
-		r.count--
-
-		r.mux.Unlock()
-	}
-	return all
 }
 
 func (l *Listener) Do() error {
 	addr := fmt.Sprintf(":%d", l.Port) // TODO: do this listen thing for port 0
 
-	l.ring = &ringBuffer{out: make(chan event.Event, l.History)}
+	l.ring = newRingBuffer(l.History, l.Retain)
 
 	_, _ = fmt.Fprintf(os.Stderr, "listening on %s\n", addr)
 	if err := http.ListenAndServe(addr, l); err != nil {
@@ -79,7 +44,7 @@ func (l *Listener) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		_, _ = fmt.Fprintf(os.Stderr, "incoming request from %s\n", req.URL.String())
 	}
 
-	if req.Method == http.MethodGet && req.URL.String() == "/history" {
+	if req.Method == http.MethodGet && req.URL.Path == "/history" {
 		l.ServeHistory(w, req)
 		return
 	}
@@ -120,7 +85,39 @@ func (l *Listener) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (l *Listener) ServeHistory(w http.ResponseWriter, _ *http.Request) {
+func (l *Listener) ServeHistory(w http.ResponseWriter, req *http.Request) {
+	waitFor := 0
+	waitValues, ok := req.URL.Query()["wait"]
+	if ok && len(waitValues) == 1 {
+		i, err := strconv.Atoi(waitValues[0])
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "error converting wait value to int: %s\n", err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		waitFor = i
+	}
+	if waitFor > l.History {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// This will hold the request open until there are at least n events in the ring.
+	if waitFor != 0 {
+		ticker := time.NewTicker(5 * time.Millisecond)
+		wait := true
+		for wait {
+			select {
+			case <-ticker.C:
+				if l.ring.Len() >= waitFor {
+					wait = false
+				}
+			case <-req.Context().Done():
+				return
+			}
+		}
+	}
+
 	for i, ce := range l.ring.All() {
 		yaml, err := event.ToYaml(ce)
 		if err != nil {
