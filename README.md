@@ -99,15 +99,3 @@ This validates that at least one event of type `com.example.someevent` is presen
 If you would like to produce a pre-produced event yaml file, you can use
 `listen` to collect requests. This works with both running event producers that
 can be directed at the `listen` port or directly with `send`.
-
-## TODO
-
-Feature requests:
-
-- [x] Add a `yaml` command that allows the same format of send but direct to
-      yaml.
-- [x] Add a `--yaml` flag to `send` that outputs what the definition of the sent
-      event would look like in yaml.
-- [x] Add `-f -` support for reading from STDIN as the file for yaml, this
-      allows for `send` | `invoke` chaining.
-- [ ] Add format support to `send` to select binary or structured.
