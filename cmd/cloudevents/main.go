@@ -20,6 +20,7 @@ func main() {
 		Run: func(cmd *cobra.Command, args []string) {
 			_ = cmd.Help()
 		},
+		SilenceUsage: true,
 	}
 	commands.AddConformanceCommands(cmds)
 

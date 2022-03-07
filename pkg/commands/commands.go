@@ -14,4 +14,5 @@ func AddConformanceCommands(topLevel *cobra.Command) {
 	addInvoke(topLevel)
 	addListener(topLevel)
 	addRaw(topLevel)
+	addDiff(topLevel)
 }

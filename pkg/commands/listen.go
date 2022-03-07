@@ -50,7 +50,7 @@ func addListener(topLevel *cobra.Command) {
 			}
 
 			// Run it.
-			if err := i.Do(); err != nil {
+			if err := i.Do(cmd.Context()); err != nil {
 				log.Fatalf("error listening: %v", err)
 			}
 		},
