@@ -126,7 +126,7 @@ func (i *Diff) Do() error {
 			if i.FullDiff {
 				_, _ = fmt.Fprintf(i.Out, "%s\n", cmpdiff.Diff(string(ab), string(bb)))
 			} else if !ignore {
-				_, _ = fmt.Fprintf(i.Out, sb.String())
+				_, _ = fmt.Fprint(i.Out, sb.String())
 				if len(diffs) > 0 {
 					diffs = append(diffs, "---")
 				}

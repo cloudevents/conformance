@@ -30,7 +30,7 @@ type Listener struct {
 	ring    *ringBuffer
 }
 
-func (l *Listener) Do(ctx context.Context) error {
+func (l *Listener) Do(ctx context.Context) (serveErr error) {
 	addr := fmt.Sprintf(":%d", l.Port)
 	tcp, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -46,25 +46,29 @@ func (l *Listener) Do(ctx context.Context) error {
 
 	_, _ = fmt.Fprintf(os.Stderr, "listening on %s\n", addr)
 
-	var serveErr error
 	server := &http.Server{Handler: l}
 
-	ctx, cancel := context.WithCancel(ctx)
+	ctxl, cancel := context.WithCancel(context.Background())
 
 	// Thread for HTTP Server.
 	go func() {
+		// This is returned.
 		serveErr = server.Serve(tcp)
 		cancel()
 	}()
 
-	// Block until context is canceled.
-	select {
-	case <-ctx.Done():
-		_ = server.Close()
-		_ = tcp.Close()
-	}
+	for {
+		select {
+		// Block until context is canceled.
+		case <-ctx.Done():
+			_ = server.Close()
+			_ = tcp.Close()
 
-	return serveErr
+		// Block until server is closed.
+		case <-ctxl.Done():
+			return
+		}
+	}
 }
 
 func (l *Listener) ServeHTTP(w http.ResponseWriter, req *http.Request) {

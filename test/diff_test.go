@@ -7,11 +7,8 @@ package test
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"github.com/cloudevents/conformance/pkg/diff"
-	"github.com/cloudevents/conformance/pkg/event"
-	"github.com/cloudevents/conformance/pkg/listener"
-	"github.com/cloudevents/conformance/pkg/sender"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -19,50 +16,56 @@ import (
 	"os"
 	"testing"
 	"time"
+
+	"github.com/cloudevents/conformance/pkg/diff"
+	"github.com/cloudevents/conformance/pkg/event"
+	"github.com/cloudevents/conformance/pkg/listener"
+	"github.com/cloudevents/conformance/pkg/sender"
 )
 
 // TestDiff produces several events and then compares what was collected with
 // what is expected.
 func TestDiff(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+
+	port := 52318 // could be 0, but this causes a race in testing.
 
 	// Stand up a listener.
 	l := &listener.Listener{
-		Port:    0,
+		Port:    port,
 		Path:    "/",
 		Verbose: false,
 		History: 10,
 		Retain:  false,
 	}
 	go func() {
-		if err := l.Do(ctx); err != nil {
+		if err := l.Do(ctx); !errors.Is(err, http.ErrServerClosed) {
 			t.Errorf("listerer failed to close cleanly, %v", err)
 		}
 	}()
 
-	// Let the server start up.
-	time.Sleep(time.Millisecond * 100)
+	// Let server start.
+	time.Sleep(time.Millisecond * 10)
 
 	expectFile, err := os.CreateTemp(os.TempDir(), "ce*")
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("expect file:", expectFile.Name())
-	//defer os.Remove(expectFile.Name())
+	defer os.Remove(expectFile.Name())
 
 	collectFile, err := os.CreateTemp(os.TempDir(), "ce*")
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("collect file:", expectFile.Name())
-	//defer os.Remove(collectFile.Name())
+	defer os.Remove(collectFile.Name())
 
 	// Send n events.
 	for n := 0; n < 5; n++ {
 		s := &sender.Sender{
 			URL: &url.URL{
-				Scheme: "http", Host: fmt.Sprintf("localhost:%d", l.Port),
+				Scheme: "http", Host: fmt.Sprintf("localhost:%d", port),
 			},
 			Event: event.Event{
 				Mode: "binary",
@@ -123,6 +126,8 @@ func TestDiff(t *testing.T) {
 	if err := d.Do(); err != nil {
 		t.Errorf("failed do diff, %v", err)
 	}
+
+	cancel()
 }
 
 func curl(target string) ([]byte, error) {
