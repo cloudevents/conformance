@@ -56,6 +56,44 @@ Optionally, you can forward the incoming request to a target.
 cloudevents listen -v -t http://localhost:8181 > got.yaml
 ```
 
+### Diff
+
+`diff` compares two yaml event files.
+
+```shell script
+cloudevents diff ./want.yaml ./got.yaml
+```
+
+`want.yaml` could have fewer fields specified to allow for fuzzy matching. 
+
+Example, if you only wanted to compare on `type` and ignore additional fields:
+
+```shell script
+$ cat ./want.yaml
+ContextAttributes:
+  type: com.example.someevent
+$ cat ./got.yaml
+Mode: structured
+ContextAttributes:
+  specversion: 1.0
+  type: com.example.someevent
+  time: 2018-04-05T03:56:24Z
+  id: 4321-4321-4321-a
+  source: /mycontext/subcontext
+  Extensions:
+    comexampleextension1 : "value"
+    comexampleextension2 : |
+      {"othervalue": 5}
+TransportExtensions:
+  user-agent: "foo"
+Data: |
+  {"world":"hello"}
+
+$ cloudevents diff ./want.yaml ./got.yaml --match type --ignore-additions
+```
+
+This validates that at least one event of type `com.example.someevent` is present in the `got.yaml` file.
+
 ## Advanced Usage
 
 If you would like to produce a pre-produced event yaml file, you can use
