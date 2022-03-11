@@ -1,0 +1,7 @@
+ContextAttributes:
+  type: com.example.someevent
+  subject: second-subject
+---
+ContextAttributes:
+  type: com.example.someevent
+  subject: first-subject
