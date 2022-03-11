@@ -64,6 +64,20 @@ type[com.example.someevent.c] diffs (-a, +b):
 -   source: /mycontext/subcontext
 +   source: /mycontext/subcontext2
 `,
+	}, {
+		name:            "sample7: two similar events, match second",
+		a:               "./testdata/sample7_a.yaml",
+		b:               "./testdata/sample7_b.yaml",
+		findBy:          []string{"type", "subject"},
+		ignoreAdditions: true,
+		wantErr:         false,
+	}, {
+		name:            "sample7: two similar events, two matches out of order, search just by type",
+		a:               "./testdata/sample7_a.yaml",
+		b:               "./testdata/sample7_b.yaml",
+		findBy:          []string{"type"},
+		ignoreAdditions: true,
+		wantErr:         false,
 	}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

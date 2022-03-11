@@ -7,6 +7,7 @@ package commands
 
 import (
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -24,6 +25,17 @@ func addDiff(topLevel *cobra.Command) {
   cloudevents diff ./want.yaml ./got.yaml
 `,
 		Args: cobra.ExactArgs(2),
+		PreRun: func(cmd *cobra.Command, args []string) {
+			var findBy []string
+			for _, fb := range do.FindBy {
+				if strings.Contains(fb, ",") {
+					findBy = append(findBy, strings.Split(fb, ",")...)
+				} else {
+					findBy = append(findBy, fb)
+				}
+			}
+			do.FindBy = findBy
+		},
 		Run: func(cmd *cobra.Command, args []string) {
 			r := diff.Diff{
 				Out:             cmd.OutOrStdout(),
