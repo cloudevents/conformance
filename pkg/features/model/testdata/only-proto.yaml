@@ -1,0 +1,5 @@
+language: Only Proto
+versions:
+  v1.0:
+    formats:
+      protobuf: true
