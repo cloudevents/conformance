@@ -1,0 +1,29 @@
+language: Bar
+versions:
+  v1.0:
+    core: true
+    formats:
+      avro: true
+      amqp: true
+      json: true
+      protobuf: true
+    bindings:
+      amqp:
+        binary: true
+        structured: true
+      http:
+        binary: true
+        structured: true
+        batch: true
+      kafka:
+        binary: true
+        structured: true
+      mqtt:
+        binary: true
+        structured: true
+      nats:
+        binary: true
+        structured: true
+      web-sockets:
+        binary: true
+        structured: true

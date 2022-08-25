@@ -1,0 +1,29 @@
+language: Baz
+versions:
+  v1.0:
+    core: false
+    formats:
+      avro: false
+      amqp: false
+      json: false
+      protobuf: false
+    bindings:
+      amqp:
+        binary: false
+        structured: false
+      http:
+        binary: false
+        structured: false
+        batch: false
+      kafka:
+        binary: false
+        structured: false
+      mqtt:
+        binary: false
+        structured: false
+      nats:
+        binary: false
+        structured: false
+      web-sockets:
+        binary: false
+        structured: false
