@@ -30,16 +30,21 @@ var table = `
   </tr>
 </thead>
 <tbody>
-{{- range .Versions }}
+{{- range $vi, $version := .Versions }}
+  {{- if gt $vi 0 }}
   <tr>
-    <td colspan="2"><strong>{{ .Name }}</strong></td>
-    {{- range .Languages }}
+    <td colspan="{{ fullSpan }}"></td>
+  </tr>
+  {{- end }}
+  <tr>
+    <td colspan="2"><strong>{{ $version.Name }}</strong></td>
+    {{- range $version.Languages }}
     <th></th>
 	{{- end }}
   </tr>
   <tr>
     <td colspan="2"><a href="https://github.com/cloudevents/spec/blob/{{ .Name }}/spec.md">CloudEvents Core</a></td>
-    {{- range .Core }}
+    {{- range $version.Core }}
     <td>{{ glyph . }}</td>
 	{{- end }}
   </tr>
@@ -48,7 +53,7 @@ var table = `
     <td colspan="{{ fullSpan }}"></td>
   </tr>
 
-  {{- range .Formats }}
+  {{- range $version.Formats }}
   <tr>
     <td colspan="2">{{ .Name }}</td>
     {{- range .Support }}
@@ -61,7 +66,7 @@ var table = `
     <td colspan="{{ fullSpan }}"></td>
   </tr>
 
-  {{- range $bi, $binding := .Bindings }}{{- range $index, $format := $binding.Formats }}
+  {{- range $bi, $binding := $version.Bindings }}{{- range $index, $format := $binding.Formats }}
   <tr>
     {{- if eq $index 0 }}
     <td rowspan="{{ len $binding.Formats }}">{{ $binding.Name }}</td>
@@ -192,6 +197,9 @@ func (r *Renderer) Render(input []model.Features, out io.Writer) error {
 		for name, vf := range f.Versions {
 			v := data.Version(name)
 			v.Core[i] = vf.Core
+
+			// The keys below become the display text on in the rendered table.
+
 			v.Format("Avro Event Format").Support[i] = vf.EventFormats.Avro
 			v.Format("AMQP Event Format").Support[i] = vf.EventFormats.AMQP
 			v.Format("JSON Event Format").Support[i] = vf.EventFormats.JSON
@@ -203,8 +211,22 @@ func (r *Renderer) Render(input []model.Features, out io.Writer) error {
 			v.Binding("HTTP").Format("Binary").Support[i] = vf.Bindings.HTTP.Binary
 			v.Binding("HTTP").Format("Structured").Support[i] = vf.Bindings.HTTP.Structured
 			v.Binding("HTTP").Format("Batch").Support[i] = vf.Bindings.HTTP.Batch
+
+			v.Binding("Kafka").Format("Binary").Support[i] = vf.Bindings.Kafka.Binary
+			v.Binding("Kafka").Format("Structured").Support[i] = vf.Bindings.Kafka.Structured
+
+			v.Binding("MQTT").Format("Binary").Support[i] = vf.Bindings.MQTT.Binary
+			v.Binding("MQTT").Format("Structured").Support[i] = vf.Bindings.MQTT.Structured
+
+			v.Binding("NATS").Format("Binary").Support[i] = vf.Bindings.NATS.Binary
+			v.Binding("NATS").Format("Structured").Support[i] = vf.Bindings.NATS.Structured
+
+			v.Binding("Web Sockets").Format("Binary").Support[i] = vf.Bindings.WebSockets.Binary
+			v.Binding("Web Sockets").Format("Structured").Support[i] = vf.Bindings.WebSockets.Structured
 		}
 	}
+
+	// TODO: URL support.
 
 	data1 := map[string]interface{}{
 		"true": ":heavy_check_mark:", "false": ":x:",
