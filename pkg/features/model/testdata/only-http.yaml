@@ -1,0 +1,11 @@
+language: Only HTTP
+versions:
+  v1.0:
+    core: true
+    formats:
+      json: true
+    bindings:
+      http:
+        binary: true
+        structured: true
+        batch: true
