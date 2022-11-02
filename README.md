@@ -9,16 +9,10 @@ _Work in progress._
 
 ## Installation
 
-`cloudevents` can be installed via:
+The latest `cloudevents` can be installed via:
 
 ```shell
-go get github.com/cloudevents/conformance/cmd/cloudevents
-```
-
-To update your installation:
-
-```shell
-go get -u github.com/cloudevents/conformance/cmd/cloudevents
+go install github.com/cloudevents/conformance/cmd/cloudevents@latest
 ```
 
 ## Usage
