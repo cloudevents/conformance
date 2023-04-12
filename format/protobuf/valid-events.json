@@ -1,0 +1,90 @@
+{
+  "tests": [
+    {
+      "id": "validMinimal",
+      "description": "Minimal event",
+      "sampleId": "minimal",
+      "validSingle": {
+        "specVersion": "1.0",
+        "id": "minimal",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "validAllCoreAttributes",
+      "description": "Event with all attributes from the core specification",
+      "sampleId": "allCore",
+      "validSingle": {
+        "specVersion": "1.0",
+        "id": "allCore",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "datacontenttype": { "ceString": "text/plain" },
+          "dataschema": { "ceUri": "https://cloudevents.io/dataschema" },
+          "subject": { "ceString": "tests" },
+          "time": { "ceTimestamp": "2018-04-05T17:31:00Z" }
+        }
+      }
+    },
+    {
+      "id": "validMinimalWithTime",
+      "description": "Minimal event but with a timestamp",
+      "sampleId": "minimalWithTime",
+      "validSingle": {
+        "specVersion": "1.0",
+        "id": "minimalWithTime",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "time": { "ceTimestamp": "2018-04-05T17:31:00Z" }
+        }
+      }
+    },
+    {
+      "id": "validRelativeSource",
+      "sampleId": "minimalWithRelativeSource",
+      "validSingle": {
+        "id": "minimalWithRelativeSource",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "#fragment"
+      }
+    },
+    {
+      "id": "validSimpleTextData",
+      "sampleId": "simpleTextData",
+      "validSingle": {
+        "specVersion": "1.0",
+        "id": "simpleTextData",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "datacontenttype": { "ceString": "text/plain" }
+        },
+        "text_data": "Simple text"
+      }
+    },
+    {
+      "id": "validAllExtensionTypes",
+      "description": "Extensions for all types.",
+      "sampleId": "allExtensionTypes",
+      "validSingle": {
+        "specVersion": "1.0",
+        "id": "allExtensionTypes",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "extinteger": { "ceInteger": 10 },
+          "extboolean": { "ceBoolean": true },
+          "extstring": { "ceString": "text" },
+          "exturi": { "ceUri": "https://cloudevents.io" },
+          "exturiref": { "ceUriRef": "//authority/path" },
+          "exttimestamp": { "ceTimestamp": "2023-03-31T15:12:00Z" },
+          "extbinary": { "ceBytes": "TWE=" }
+        }
+      }
+    }
+  ]
+}

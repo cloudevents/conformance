@@ -1,0 +1,93 @@
+{
+  "testType": "ValidBatch",
+  "tests": [
+    {
+      "id": "validBatchEmpty",
+      "description": "Empty batch",
+      "sampleId": "empty",
+      "batch": []
+    },
+    {
+      "id": "validBatchMinimal",
+      "description": "Minimal batch",
+      "sampleId": "minimal",
+      "batch": [
+        {
+          "specversion": "1.0",
+          "id": "minimal",
+          "type": "io.cloudevents.test",
+          "source": "https://cloudevents.io"
+        }
+      ]
+    },
+    {
+      "id": "validBatchMinimal2",
+      "description": "Batch with two copies of minimal",
+      "sampleId": "minimal2",
+      "batch": [
+        {
+          "specversion": "1.0",
+          "id": "minimal",
+          "type": "io.cloudevents.test",
+          "source": "https://cloudevents.io"
+        },
+        {
+          "specversion": "1.0",
+          "id": "minimal",
+          "type": "io.cloudevents.test",
+          "source": "https://cloudevents.io"
+        }
+      ]
+    },
+    {
+      "id": "validBatchMinimalAndAllCore",
+      "description": "Batch with minimal and allCore events",
+      "sampleId": "minimalAndAllCore",
+      "batch": [
+        {
+          "specversion": "1.0",
+          "id": "minimal",
+          "type": "io.cloudevents.test",
+          "source": "https://cloudevents.io"
+        },
+        {
+          "specversion": "1.0",
+          "id": "allCore",
+          "type": "io.cloudevents.test",
+          "source": "https://cloudevents.io",
+          "datacontenttype": "text/plain",
+          "dataschema": "https://cloudevents.io/dataschema",
+          "subject": "tests",
+          "time": "2018-04-05T17:31:00Z"
+        }
+      ]
+    },
+    {
+      "id": "validBatchMinimalAndAllExtensionTypes",
+      "description": "Batch with minimal and allExtensionTypes events",
+      "sampleId": "minimalAndAllExtensionTypes",
+      "sampleExtensionAttributes": true,
+      "batch": [
+        {
+          "specversion": "1.0",
+          "id": "minimal",
+          "type": "io.cloudevents.test",
+          "source": "https://cloudevents.io"
+        },
+        {
+          "specversion": "1.0",
+          "id": "allExtensionTypes",
+          "type": "io.cloudevents.test",
+          "source": "https://cloudevents.io",
+          "extinteger": 10,
+          "extboolean": true,
+          "extstring": "text",
+          "exturi": "https://cloudevents.io",
+          "exturiref": "//authority/path",
+          "exttimestamp": "2023-03-31T15:12:00Z",
+          "extbinary": "TWE="
+        }
+      ]
+    }
+  ]
+}

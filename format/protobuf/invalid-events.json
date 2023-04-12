@@ -1,0 +1,213 @@
+{
+  "tests": [
+    {
+      "id": "invalidNoSpecVersion",
+      "invalidSingle": {
+        "id": "invalid",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "invalidNoId",
+      "invalidSingle": {
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "invalidNoType",
+      "invalidSingle": {
+        "specVersion": "1.0",
+        "id": "invalid",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "invalidNoSource",
+      "invalidSingle": {
+        "specVersion": "1.0",
+        "id": "invalid",
+        "type": "io.cloudevents.test"
+      }
+    },
+    {
+      "id": "invalidEmptyId",
+      "invalidSingle": {
+        "id": "",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "invalidEmptyType",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "invalidEmptySource",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": ""
+      }
+    },
+    {
+      "id": "invalidEmptySpecVersion",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "invalidUnknownSpecVersion",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "0.9",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "invalidNonRfc2046DataContentType",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "datacontenttype": { "ceString": "xyz" }
+        }
+      }
+    },
+    {
+      "id": "invalidEmptyDataContentType",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "datacontenttype": { "ceString": "" }
+        }
+      }
+    },
+    {
+      "id": "invalidDataContentTypeWrongType",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "datacontenttype": { "ceInteger": 5 }
+        }
+      }
+    },
+    {
+      "id": "invalidEmptyDataSchema",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "dataschema": { "ceString": "" }
+        }
+      }
+    },
+    {
+      "id": "invalidDataSchemaWrongType",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "dataschema": { "ceInteger": 5 }
+        }
+      }
+    },
+    {
+      "id": "invalidEmptySubject",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "subject": { "ceString": "" }
+        }
+      }
+    },
+    {
+      "id": "invalidSubjectWrongType",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "subject": { "ceInteger": 5 }
+        }
+      }
+    },
+    {
+      "id": "invalidTimeWrongType",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "time": { "ceInteger": 5 }
+        }
+      }
+    },
+    {
+      "id": "invalidCapitalizedExtension",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "MyExtension": { "ceString": "bad" }
+        }
+      }
+    },
+    {
+      "id": "invalidPunctuatedExtension",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "My.Extension": { "ceString": "bad" }
+        }
+      }
+    },
+    {
+      "id": "invalidExtensionNoValue",
+      "invalidSingle": {
+        "id": "invalid",
+        "specVersion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "attributes": {
+          "My.Extension": {}
+        }
+      }
+    }
+  ]
+}

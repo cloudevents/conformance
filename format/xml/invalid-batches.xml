@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<testFile xmlns:ce="http://cloudevents.io/xmlformat/V1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          testType="InvalidBatch">
+  <test id="invalidBatchWrongElementName">
+    <ce:Batch />
+  </test>
+
+  <test id="invalidBatchWrongElementNamespace">
+    <ce2:batch specversion="1.0" xmlns:ce2="http://cloudevents.io/xmlformat/V2" />
+  </test>
+
+  <test id="invalidBatchMissingElementNamespace">
+    <batch specversion="1.0" />
+  </test>
+
+  <test id="invalidBatchAdditionalTextNode">
+    <ce:batch>
+      This shouldn't be here.
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+    </ce:batch>
+  </test>
+
+  <test id="invalidBatchContainingInvalidCloudEvent">
+    <ce:batch>
+      <ce:event specversion="1.0">
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+    </ce:batch>
+  </test>
+
+  <test id="invalidBatchContainingNonEventElementInCloudEventsNamespace">
+    <ce:batch>
+      <ce:bogus />
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+    </ce:batch>
+  </test>
+
+  <test id="invalidBatchContainingNestedBatch">
+    <ce:batch>
+      <ce:batch />
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+    </ce:batch>
+  </test>
+</testFile>

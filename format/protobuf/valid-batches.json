@@ -1,0 +1,106 @@
+{
+  "tests": [
+    {
+      "id": "validBatchEmpty",
+      "description": "Empty batch",
+      "sampleId": "empty",
+      "validBatch": {
+        "events": [
+        ]
+      }
+    },
+    {
+      "id": "validBatchMinimal",
+      "description": "Minimal batch",
+      "sampleId": "minimal",
+      "validBatch": {
+        "events": [
+          {
+            "specVersion": "1.0",
+            "id": "minimal",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io"
+          }
+        ]
+      }
+    },
+    {
+      "id": "validBatchMinimal2",
+      "description": "Batch with two copies of minimal",
+      "sampleId": "minimal2",
+      "validBatch": {
+        "events": [
+          {
+            "specVersion": "1.0",
+            "id": "minimal",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io"
+          },
+          {
+            "specVersion": "1.0",
+            "id": "minimal",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io"
+          }
+        ]
+      }
+    },
+    {
+      "id": "validBatchMinimalAndAllCore",
+      "description": "Batch with minimal and allCore events",
+      "sampleId": "minimalAndAllCore",
+      "validBatch": {
+        "events": [
+          {
+            "specVersion": "1.0",
+            "id": "minimal",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io"
+          },
+          {
+            "specVersion": "1.0",
+            "id": "allCore",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io",
+            "attributes": {
+              "datacontenttype": { "ceString": "text/plain" },
+              "dataschema": { "ceUri": "https://cloudevents.io/dataschema" },
+              "subject": { "ceString": "tests" },
+              "time": { "ceTimestamp": "2018-04-05T17:31:00Z" }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "validBatchMinimalAndAllExtensionTypes",
+      "description": "Batch with minimal and allExtensionTypes",
+      "sampleId": "minimalAndAllExtensionTypes",
+      "validBatch": {
+        "events": [
+          {
+            "specVersion": "1.0",
+            "id": "minimal",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io"
+          },
+          {
+            "specVersion": "1.0",
+            "id": "allExtensionTypes",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io",
+            "attributes": {
+              "extinteger": { "ceInteger": 10 },
+              "extboolean": { "ceBoolean": true },
+              "extstring": { "ceString": "text" },
+              "exturi": { "ceUri": "https://cloudevents.io" },
+              "exturiref": { "ceUriRef": "//authority/path" },
+              "exttimestamp": { "ceTimestamp": "2023-03-31T15:12:00Z" },
+              "extbinary": { "ceBytes": "TWE=" }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

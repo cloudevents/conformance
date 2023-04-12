@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<testFile xmlns:ce="http://cloudevents.io/xmlformat/V1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          testType="ValidBatch">
+  <test id="validBatchEmpty" sampleId="empty">
+    <ce:batch />
+  </test>
+
+  <test id="validBatchMinimal" sampleId="minimal">
+    <ce:batch>
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+    </ce:batch>
+  </test>
+
+  <test id="validBatchMinimalWithNonCloudEventElement" sampleId="minimal">
+    <ce:batch>
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+      <event>
+        This isn't a CloudEvent element - it's in the wrong namespace.
+        It's just ignored.
+      </event>
+    </ce:batch>
+  </test>
+
+  <test id="validBatchMinimalWithComment" sampleId="minimal">
+    <ce:batch>
+      <!-- Comment in batch element -->
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+    </ce:batch>
+  </test>
+
+  <test id="validBatchMinimalWithAdditionalAttribute" sampleId="minimal">
+    <ce:batch ignored="true">
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+    </ce:batch>
+  </test>
+  
+  <test id="validBatchMinimal2" sampleId="minimal2">
+    <ce:batch>
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+    </ce:batch>
+  </test>
+  
+  <test id="validBatchMinimalAndAllCore" sampleId="minimalAndAllCore">
+    <ce:batch>
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+      <ce:event specversion="1.0">
+        <ce:id>allCore</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+        <ce:datacontenttype>text/plain</ce:datacontenttype>
+        <ce:dataschema>https://cloudevents.io/dataschema</ce:dataschema>
+        <ce:subject>tests</ce:subject>
+        <ce:time>2018-04-05T17:31:00Z</ce:time>
+      </ce:event>
+    </ce:batch>
+  </test>
+
+  <test id="validBatchMinimalAndAllExtensionTypes" sampleId="minimalAndAllExtensionTypes">
+    <ce:batch>
+      <ce:event specversion="1.0">
+        <ce:id>minimal</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+      </ce:event>
+      <ce:event specversion="1.0">
+        <ce:id>allExtensionTypes</ce:id>
+        <ce:source>https://cloudevents.io</ce:source>
+        <ce:type>io.cloudevents.test</ce:type>
+        <ce:extinteger xsi:type="ce:integer">10</ce:extinteger>
+        <ce:extboolean xsi:type="ce:boolean">true</ce:extboolean>
+        <ce:extstring xsi:type="ce:string">text</ce:extstring>
+        <ce:extbinary xsi:type="ce:binary">TWE=</ce:extbinary>
+        <ce:exttimestamp xsi:type="ce:timestamp">2023-03-31T15:12:00Z</ce:exttimestamp>
+        <ce:exturi xsi:type="ce:uri">https://cloudevents.io</ce:exturi>
+        <ce:exturiref xsi:type="ce:uriRef">//authority/path</ce:exturiref>
+      </ce:event>
+    </ce:batch>
+  </test>
+</testFile>

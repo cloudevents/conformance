@@ -1,0 +1,131 @@
+{
+  "testType": "ValidSingleEvent",
+  "tests": [
+    {
+      "id": "validMinimal",
+      "description": "Minimal event",
+      "sampleId": "minimal",
+      "event": {
+        "specversion": "1.0",
+        "id": "minimal",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io"
+      }
+    },
+    {
+      "id": "validMinimalWithNullForOptional",
+      "description": "Event with all attributes from the core specification, but all the optional ones set to null",
+      "sampleId": "minimal",
+      "event": {
+        "specversion": "1.0",
+        "id": "minimal",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "datacontenttype": null,
+        "dataschema": null,
+        "subject": null,
+        "time": null
+      }
+    },
+    {
+      "id": "validAllCoreAttributes",
+      "description": "Event with all attributes from the core specification",
+      "sampleId": "allCore",
+      "event": {
+        "specversion": "1.0",
+        "id": "allCore",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "datacontenttype": "text/plain",
+        "dataschema": "https://cloudevents.io/dataschema",
+        "subject": "tests",
+        "time": "2018-04-05T17:31:00Z"
+      }
+    },
+    {
+      "id": "validMinimalWithTimeUtc",
+      "description": "Minimal event but with a timestamp",
+      "sampleId": "minimalWithTime",
+      "event": {
+        "specversion": "1.0",
+        "id": "minimalWithTime",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "time": "2018-04-05T17:31:00Z"
+      }
+    },
+    {
+      "id": "validMinimalWithTimeToNanosecondsUtc",
+      "sampleId": "minimalWithTime",
+      "event": {
+        "specversion": "1.0",
+        "id": "minimalWithTime",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "time": "2018-04-05T17:31:00.000000000Z"
+      }
+    },
+    {
+      "id": "validMinimalWithTimeUsingPositiveOffset",
+      "sampleId": "minimalWithTime",
+      "event": {
+        "specversion": "1.0",
+        "id": "minimalWithTime",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "time": "2018-04-05T18:31:00+01:00"
+      }
+    },
+    {
+      "id": "validMinimalWithTimeUsingNegativeOffset",
+      "sampleId": "minimalWithTime",
+      "event": {
+        "specversion": "1.0",
+        "id": "minimalWithTime",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "time": "2018-04-05T16:31:00-01:00"
+      }
+    },
+    {
+      "id": "validRelativeSource",
+      "sampleId": "minimalWithRelativeSource",
+      "event": {
+        "id": "minimalWithRelativeSource",
+        "specversion": "1.0",
+        "type": "io.cloudevents.test",
+        "source": "#fragment"
+      }
+    },    {
+      "id": "validSimpleTextData",
+      "sampleId": "simpleTextData",
+      "event": {
+        "specversion": "1.0",
+        "id": "simpleTextData",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "datacontenttype": "text/plain",
+        "data": "Simple text"
+      }
+    },
+    {
+      "id": "validAllExtensionTypes",
+      "description": "Extensions for all types.",
+      "sampleId": "allExtensionTypes",
+      "sampleExtensionAttributes": true,
+      "event": {
+        "specversion": "1.0",
+        "id": "allExtensionTypes",
+        "type": "io.cloudevents.test",
+        "source": "https://cloudevents.io",
+        "extinteger": 10,
+        "extboolean": true,
+        "extstring": "text",
+        "exturi": "https://cloudevents.io",
+        "exturiref": "//authority/path",
+        "exttimestamp": "2023-03-31T15:12:00Z",
+        "extbinary": "TWE="
+      }
+    }
+  ]
+}
