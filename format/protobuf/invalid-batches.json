@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "id": "invalidBatchMixedSpecVersions",
+      "invalidBatch": {
+        "events": [
+          {
+            "specVersion": "1.0",
+            "id": "minimal1",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io"
+          },
+          {
+            "specVersion": "0.9",
+            "id": "minimal2",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io"
+          }
+        ]
+      }
+    },
+    {
+      "id": "invalidBatchContainingInvalidCloudEvent",
+      "description": "Batch containing an invalid CloudEvent (no ID)",
+      "invalidBatch": {
+        "events": [
+          {
+            "specVersion": "1.0",
+            "type": "io.cloudevents.test",
+            "source": "https://cloudevents.io"
+          }
+        ]
+      }
+    }
+  ]
+}

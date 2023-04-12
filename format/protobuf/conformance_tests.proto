@@ -1,0 +1,54 @@
+﻿// Copyright 2023 Cloud Native Foundation. 
+// Licensed under the Apache 2.0 license.
+// See LICENSE file in the project root for full license information.
+
+syntax = "proto3";
+
+package io.cloudevents.v1;
+
+// As expected by the C# SDK. Other SDKs can add their packages/namespace options here.
+option csharp_namespace = "CloudNative.CloudEvents.Protobuf.UnitTests";
+
+import "cloudevents.proto";
+
+// A simple container for conformance tests.
+message ConformanceTestFile {
+  // The tests within this file.
+  repeated ConformanceTest tests = 1;
+}
+
+// A single test in the conformance test suite.
+message ConformanceTest {
+  // The ID of the test; must be unique across all protobuf conformance tests.
+  string id = 1;
+
+  // The description of the test.
+  string description = 2;
+
+  // For valid tests, the ID of the well-known sample event/batch that
+  // this test data should be equivalent to.
+  string sample_id = 3;
+
+  // The event to test.
+  oneof event {
+    // A single event that should be converted to an in-memory representation without error.
+    // sample_id indicates the sample event that the result should be equivalent to.
+    CloudEvent valid_single = 4;
+
+    // A batch of events that should be converted to an in-memory representation without error.
+    // sample_id indicates the sample batch that the result should be equivalent to.
+    CloudEventBatch valid_batch = 5;
+
+    // A single event that should be rejected when converted to an in-memory representation.
+    CloudEvent invalid_single = 6;
+
+    // A batch of events that should be rejected when converted to an in-memory representation.
+    CloudEventBatch invalid_batch = 7;
+  }  
+}
+
+// A sample message for tests using CloudEvent.proto_data.
+message ConformanceTestMessageData {
+  // Just some text data.
+  string text = 1;
+}
