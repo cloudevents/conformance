@@ -17,6 +17,7 @@ form of a wording change and corresponding conformance test.
 
 Conformance tests should always be valid in terms of the higher-level format: JSON format
 test files are always in the form of valid JSON documents, for example.
+We're not attempting to test the JSON (etc) parsers used by each SDK.
 
 ## "Golden" sample events
 
@@ -158,4 +159,10 @@ The `minimalAndAllExtensionTypes` batch consists of two events, which are the
 - `shortbinary`: Binary which must have at most 5 bytes
 - `moderntimestamp`: Timestamp which must be at or after 2000-01-01T00:00:00Z
 
-## TODO: Sample batches
+## Remaining work
+
+- Tests using constrained attributes
+- Formatting tests, e.g. "this representation is canonical -
+  formatting the sample event should result in this representation"
+  (with handwaving around ordering of elements etc).
+- More tests for all formats are always welcome
