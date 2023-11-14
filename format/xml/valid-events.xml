@@ -89,4 +89,26 @@
       <ce:exturiref xsi:type="ce:uriRef">//authority/path</ce:exturiref>
     </ce:event>
   </test>
+
+  <test id="validBinaryData">
+    <ce:event specversion="1.0">
+      <ce:id>binaryData</ce:id>
+      <ce:source>https://cloudevents.io</ce:source>
+      <ce:type>io.cloudevents.test</ce:type>
+      <ce:data xsi:type="xs:base64Binary">AQID</ce:data>
+    </ce:event>
+  </test>
+
+  <test id="validXmlData">
+    <ce:event specversion="1.0" >
+      <ce:id>xmlData</ce:id>
+      <ce:source>https://cloudevents.io</ce:source>
+      <ce:type>io.cloudevents.test</ce:type>
+      <ce:data xsi:type="xs:any">
+        <test attr="x">
+          Text<nested />
+          </test>
+        </ce:data>
+      </ce:event>
+    </test>
 </testFile>

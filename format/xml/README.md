@@ -15,7 +15,8 @@ attributes:
 
 - `id`: the ID of the test
 - `sampleId`: for a valid event/batch test, this provides the "golden"
-  sample ID to compare the result with
+  sample ID to compare the result with. This may be absent, in order
+  to test valid events for which there is no golden sample.
 - `testType`: used to override the default test type in the file
 - `description`: an optional description of the test (purely for clarity)
 - `sampleExtensionAttributes`: `true` if this test requires pre-defined sample extension attributes;
