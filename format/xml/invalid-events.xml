@@ -375,7 +375,6 @@
     </ce:event>
   </test>
 
-  <!-- TODO: Is this prohibited in the format spec? -->
   <test id="invalidAdditionalTextNode">
     <ce:event specversion="1.0" >
       This shouldn't be here.
@@ -422,12 +421,48 @@
     </ce:event>
   </test>
 
+  <test id="invalidLineBreakInContextAttribute">
+    <ce:event specversion="1.0">
+      <ce:id>first line
+      second line</ce:id>
+      <ce:source>https://cloudevents.io</ce:source>
+      <ce:type>io.cloudevents.test</ce:type>
+    </ce:event>
+  </test>
+
   <test id="invalidExtensionWithConflictingType" sampleExtensionAttributes="true">
-    <ce:event specversion="1.0" >
+    <ce:event specversion="1.0">
       <ce:id>invalid</ce:id>
       <ce:source>https://cloudevents.io</ce:source>
       <ce:type>io.cloudevents.test</ce:type>
       <ce:extinteger xsi:type="ce:string">10</ce:extinteger>
+    </ce:event>
+  </test>
+
+  <test id="invalidBadBase64Data">
+    <ce:event specversion="1.0">
+      <ce:id>invalid</ce:id>
+      <ce:source>https://cloudevents.io</ce:source>
+      <ce:type>io.cloudevents.test</ce:type>
+      <ce:data xsi:type="xs:base64Binary">x</ce:data>
+    </ce:event>
+  </test>
+
+  <test id="invalidTextDataWithChildElement">
+    <ce:event specversion="1.0">
+      <ce:id>invalid</ce:id>
+      <ce:source>https://cloudevents.io</ce:source>
+      <ce:type>io.cloudevents.test</ce:type>
+      <ce:data xsi:type="xs:string">x<nested/></ce:data>
+    </ce:event>
+  </test>
+
+  <test id="invalidBinaryDataWithChildElement">
+    <ce:event specversion="1.0">
+      <ce:id>invalid</ce:id>
+      <ce:source>https://cloudevents.io</ce:source>
+      <ce:type>io.cloudevents.test</ce:type>
+      <ce:data xsi:type="xs:base64Binary">AQID<nested/></ce:data>
     </ce:event>
   </test>
 </testFile>
