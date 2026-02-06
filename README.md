@@ -2,6 +2,9 @@
 
 `cloudevents` is a tool for testing CloudEvents receivers.
 
+This repository has been archived due to inactivity. If someone would like to
+continue with the work please send an email to cncf-cloudevents@lists.cncf.io.
+
 [![GoDoc](https://godoc.org/github.com/cloudevents/conformance?status.svg)](https://godoc.org/github.com/cloudevents/conformance)
 [![Go Report Card](https://goreportcard.com/badge/cloudevents/conformance)](https://goreportcard.com/report/cloudevents/conformance)
 
