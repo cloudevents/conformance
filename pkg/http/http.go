@@ -9,7 +9,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -140,7 +140,7 @@ func structuredRequestToEvent(req *http.Request) (*event.Event, error) {
 		Mode: event.StructuredMode,
 	}
 
-	body, err := ioutil.ReadAll(req.Body)
+	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -202,7 +202,7 @@ func structuredRequestToEvent(req *http.Request) (*event.Event, error) {
 }
 
 func binaryRequestToEvent(req *http.Request) (*event.Event, error) {
-	body, err := ioutil.ReadAll(req.Body)
+	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		return nil, err
 	}

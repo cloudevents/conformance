@@ -6,7 +6,6 @@
 package http
 
 import (
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -29,7 +28,7 @@ Data: |
 `
 
 func makeUnitTestYaml() (string, func()) {
-	file, err := ioutil.TempFile("", "unit_test_*.yaml")
+	file, err := os.CreateTemp("", "unit_test_*.yaml")
 	if err != nil {
 		log.Fatal(err)
 	}

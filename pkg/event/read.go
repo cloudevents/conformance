@@ -7,7 +7,6 @@ package event
 
 import (
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -86,7 +85,7 @@ func readFile(pathName string) ([]Event, error) {
 }
 
 func readDir(pathName string, recursive bool) ([]Event, error) {
-	list, err := ioutil.ReadDir(pathName)
+	list, err := os.ReadDir(pathName)
 	if err != nil {
 		return nil, err
 	}
